@@ -361,3 +361,14 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Ignore Visual Studio Setup Project
+FabricationSampleInstaller/
+Installer/
+*.vdproj
+
+# Ignore build outputs
+[Oo]bj/
+[Bb]in/
+*.msi
+*.exe

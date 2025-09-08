@@ -51,6 +51,8 @@ namespace FabricationSample
             //if (CheckCadMepLoaded() && CheckApiLoaded())
             //{
             _win = new FabricationWindow();
+            WindowInteropHelper wih = new WindowInteropHelper(_win);
+            wih.Owner = Process.GetCurrentProcess().MainWindowHandle;
             _win.ShowDialog();
             //}
         }
