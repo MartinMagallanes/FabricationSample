@@ -1,0 +1,542 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2589D739-54EE-4762-8BA2-F5F882F092FB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FabricationSample</RootNamespace>
+    <AssemblyName>FabricationSample</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Setup.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="accoremgd">
+      <HintPath>..\..\..\..\..\3rdparty\AutoCAD\accoremgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="acdbmgd">
+      <HintPath>..\..\..\..\..\3rdparty\AutoCAD\acdbmgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="acmgd">
+      <HintPath>..\..\..\..\..\3rdparty\AutoCAD\acmgd.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="FabricationAPI">
+      <HintPath>..\..\..\..\bin\urelease64\FabricationAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationUI, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="ReachFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\DataMapping.cs" />
+    <Compile Include="Examples\FabricationAPIACADExamples.cs" />
+    <Compile Include="Examples\FabricationAPIExamples.cs" />
+    <Compile Include="FabricationWindow.xaml.cs">
+      <DependentUpon>FabricationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Manager\FabricationManager.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Sample.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\Ancillaries\AncillariesView.xaml.cs">
+      <DependentUpon>AncillariesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Ancillaries\AncillaryDetailsView.xaml.cs">
+      <DependentUpon>AncillaryDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DatabaseEditor\Content\CreateItem.xaml.cs">
+      <DependentUpon>CreateItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DatabaseEditor\Content\LoadItem.xaml.cs">
+      <DependentUpon>LoadItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DatabaseEditor\DatabaseEditor-Job.cs" />
+    <Compile Include="UserControls\DatabaseEditor\DatabaseEditor-Ancillaries.cs" />
+    <Compile Include="UserControls\DatabaseEditor\DatabaseEditor-Sections.cs" />
+    <Compile Include="UserControls\DatabaseEditor\DatabaseEditor-Materials.cs" />
+    <Compile Include="UserControls\DatabaseEditor\DatabaseEditor-MapProd.cs" />
+    <Compile Include="UserControls\DatabaseEditor\DatabaseEditor-ServiceTypes.cs" />
+    <Compile Include="UserControls\DatabaseEditor\DatabaseEditor-ServiceTemplates.cs" />
+    <Compile Include="UserControls\DatabaseEditor\DatabaseEditor-Services.cs" />
+    <Compile Include="UserControls\DatabaseEditor\DatabaseEditor-InstallTimes.cs" />
+    <Compile Include="UserControls\DatabaseEditor\DatabaseEditor-FabTimes.cs" />
+    <Compile Include="UserControls\DatabaseEditor\DatabaseEditor-PriceLists.cs" />
+    <Compile Include="UserControls\DatabaseEditor\DatabaseEditor.xaml.cs">
+      <DependentUpon>DatabaseEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dimensions\DimensionComboEdit.xaml.cs">
+      <DependentUpon>DimensionComboEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Dimensions\DimensionNumberEdit.xaml.cs">
+      <DependentUpon>DimensionNumberEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Tables\FabricationTimes\ProductIdFabricationTimesView.xaml.cs">
+      <DependentUpon>ProductIdFabricationTimesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GaugeSizes\ElectricalContainmentGaugeSizeView.xaml.cs">
+      <DependentUpon>ElectricalContainmentGaugeSizeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GaugeSizes\LinearDuctGaugeSizeView.xaml.cs">
+      <DependentUpon>LinearDuctGaugeSizeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GaugeSizes\MachineGaugeSizeView.xaml.cs">
+      <DependentUpon>MachineGaugeSizeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GaugeSizes\PipeworkGaugeSizeView.xaml.cs">
+      <DependentUpon>PipeworkGaugeSizeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Gauges\SpecGaugesView.xaml.cs">
+      <DependentUpon>SpecGaugesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Gauges\ThicknessGaugesView.xaml.cs">
+      <DependentUpon>ThicknessGaugesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Tables\InstallationTimes\ProductIdInstallationTimesView.xaml.cs">
+      <DependentUpon>ProductIdInstallationTimesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ItemEditor\ItemEditor.xaml.cs">
+      <DependentUpon>ItemEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ItemEditor\ProductList\AddProductDataEntry.xaml.cs">
+      <DependentUpon>AddProductDataEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ItemEditor\ProductList\AddProductDimensionEntry.xaml.cs">
+      <DependentUpon>AddProductDimensionEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ItemEditor\ProductList\AddProductDataBoughtOutEntry.xaml.cs">
+      <DependentUpon>AddProductDataBoughtOutEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ItemEditor\ProductList\AddProductDataFlowEntry.xaml.cs">
+      <DependentUpon>AddProductDataFlowEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ItemEditor\ProductList\AddProductOptionEntry.xaml.cs">
+      <DependentUpon>AddProductOptionEntry.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ItemFolders\ItemFoldersView.xaml.cs">
+      <DependentUpon>ItemFoldersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Options\OptionNumberEdit.xaml.cs">
+      <DependentUpon>OptionNumberEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Options\OptionSelectEdit.xaml.cs">
+      <DependentUpon>OptionSelectEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Options\OptionComboEdit.xaml.cs">
+      <DependentUpon>OptionComboEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Tables\BreakPointView.xaml.cs">
+      <DependentUpon>BreakPointView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Tables\PriceLists\ProductIdPriceListView.xaml.cs">
+      <DependentUpon>ProductIdPriceListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Service Buttons\ServiceButtonsView.xaml.cs">
+      <DependentUpon>ServiceButtonsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ServiceEditor\ServiceEditor.xaml.cs">
+      <DependentUpon>ServiceEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EditAncillaryWindow.xaml.cs">
+      <DependentUpon>EditAncillaryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddAncillaryWindow.xaml.cs">
+      <DependentUpon>AddAncillaryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddEditProductDBWindow.xaml.cs">
+      <DependentUpon>AddEditProductDBWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddDiscountWindow.xaml.cs">
+      <DependentUpon>AddDiscountWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddInstallationTimesEntryWindow.xaml.cs">
+      <DependentUpon>AddInstallationTimesEntryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddFabricationTimesEntryWindow.xaml.cs">
+      <DependentUpon>AddFabricationTimesEntryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddInstallTimesTableWindow.xaml.cs">
+      <DependentUpon>AddInstallTimesTableWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddMaterialWindow.xaml.cs">
+      <DependentUpon>AddMaterialWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddPriceListEntryWindow.xaml.cs">
+      <DependentUpon>AddPriceListEntryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddPriceListWindow.xaml.cs">
+      <DependentUpon>AddPriceListWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddServiceTemplateWindow.xaml.cs">
+      <DependentUpon>AddServiceTemplateWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddServiceTemplateConditionWindow.xaml.cs">
+      <DependentUpon>AddServiceTemplateConditionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddServiceTabWindow.xaml.cs">
+      <DependentUpon>AddServiceTabWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddServiceButtonWindow.xaml.cs">
+      <DependentUpon>AddServiceButtonWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddServiceButtonItemWindow.xaml.cs">
+      <DependentUpon>AddServiceButtonItemWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddItemFolderWindow.xaml.cs">
+      <DependentUpon>AddItemFolderWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddServiceWindow.xaml.cs">
+      <DependentUpon>AddServiceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddProductSizeToJobWindow.xaml.cs">
+      <DependentUpon>AddProductSizeToJobWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddFabricationTimesTableWindow.xaml.cs">
+      <DependentUpon>AddFabricationTimesTableWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EditMaterialWindow.xaml.cs">
+      <DependentUpon>EditMaterialWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EditNameWindow.xaml.cs">
+      <DependentUpon>EditNameWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EditServiceButtonItemWindow.xaml.cs">
+      <DependentUpon>EditServiceButtonItemWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EditServiceButtonWindow.xaml.cs">
+      <DependentUpon>EditServiceButtonWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EditValueWindow.xaml.cs">
+      <DependentUpon>EditValueWindow.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="FabricationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Ancillaries\AncillariesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Ancillaries\AncillaryDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DatabaseEditor\Content\CreateItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DatabaseEditor\Content\LoadItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DatabaseEditor\DatabaseEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Dimensions\DimensionComboEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Dimensions\DimensionNumberEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Tables\FabricationTimes\ProductIdFabricationTimesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\GaugeSizes\ElectricalContainmentGaugeSizeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\GaugeSizes\LinearDuctGaugeSizeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\GaugeSizes\MachineGaugeSizeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\GaugeSizes\PipeworkGaugeSizeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Gauges\SpecGaugesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Gauges\ThicknessGaugesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Tables\InstallationTimes\ProductIdInstallationTimesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ItemEditor\ItemEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ItemEditor\ProductList\AddProductDataEntry.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ItemEditor\ProductList\AddProductDimensionEntry.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\ItemEditor\ProductList\AddProductDataBoughtOutEntry.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\ItemEditor\ProductList\AddProductDataFlowEntry.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\ItemEditor\ProductList\AddProductOptionEntry.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\ItemFolders\ItemFoldersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Options\OptionNumberEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Options\OptionSelectEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Options\OptionComboEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Tables\BreakPointView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Tables\PriceLists\ProductIdPriceListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\Service Buttons\ServiceButtonsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ServiceEditor\ServiceEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditAncillaryWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\AddAncillaryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddEditProductDBWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\AddDiscountWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\AddInstallationTimesEntryWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\AddFabricationTimesEntryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddInstallTimesTableWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\AddMaterialWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddPriceListEntryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddPriceListWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddServiceTemplateWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\AddServiceTemplateConditionWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\AddServiceTabWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\AddServiceButtonWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\AddServiceButtonItemWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\AddItemFolderWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\AddServiceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddProductSizeToJobWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\AddFabricationTimesTableWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditMaterialWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditNameWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditServiceButtonItemWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditServiceButtonWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditValueWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\closePanelActive.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ACAD\FabricationSample.bundle\FabricationSample.ico" />
+    <Content Include="ACAD\FabricationSample.bundle\FabricationSampleHelp.htm" />
+    <Content Include="ACAD\FabricationSample.bundle\FabricationSample_16.bmp" />
+    <Content Include="ACAD\FabricationSample.bundle\FabricationSample_16.png" />
+    <Content Include="ACAD\FabricationSample.bundle\FabricationSample_32.bmp" />
+    <Content Include="ACAD\FabricationSample.bundle\FabricationSample_32.png" />
+    <Content Include="ACAD\FabricationSample.bundle\PackageContents.xml" />
+    <Content Include="FabricationSample.addin">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Resources\Setup.ico" />
+    <Resource Include="Resources\part.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\item.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Folder-32.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\arrow_left_32%402x.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\database+server_32%402x.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\adsk.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ACAD\FabricationSample.bundle\FabricationSample.cuix" />
+    <None Include="ReadMe_FabricationSample.rtf" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(XamlSpyInstallPath)MSBuild\FirstFloor.XamlSpy.WPF.targets" Condition="'$(XamlSpyInstallPath)' != '' and '$(Configuration)' == 'DEBUG'" />
+  <PropertyGroup>
+    <PreBuildEvent>..\..\..\..\..\..\..\..\3rdparty\downloadpackages.bat release</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

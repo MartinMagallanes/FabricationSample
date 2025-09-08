@@ -1,0 +1,578 @@
+﻿<UserControl x:Class="FabricationSample.UserControls.ItemEditor.ItemEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FabricationSample.Manager"
+             mc:Ignorable="d" 
+             d:DesignHeight="460" d:DesignWidth="780" Loaded="UserControl_Loaded">
+    <StackPanel>
+        <DockPanel  DockPanel.Dock="top"  VerticalAlignment="Top" Margin="5,0,0,0">
+            <TextBlock x:Name="txtItemName" TextWrapping="Wrap" Width="350" Text="Item Name: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" />
+            <TextBlock x:Name="txtItemOwner" TextWrapping="Wrap" Width="200" Text="Item Owner: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" />
+            <TextBlock x:Name="txtItemType" TextWrapping="Wrap" Width="200" Text="Item Type: " VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" />
+
+
+        </DockPanel>
+        <StackPanel>
+            <TabControl x:Name="tbBody"  VerticalAlignment="Top" TabStripPlacement="Left" Height="392" Margin="0,0,0,15">
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TabItem">
+                                    <Border Name="Border" BorderThickness="1,1,1,1" BorderBrush="Gainsboro"  Margin="1">
+                                        <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left"
+                                        ContentSource="Header"
+                                        Margin="10,2"
+                                        />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Border" Property="Background" Value="#FFF0F0F0" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter TargetName="Border" Property="Background" Value="White" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+                <TabItem x:Name="tbiProperties" Header="Properties">
+                   <ScrollViewer VerticalScrollBarVisibility="Auto">
+                  <StackPanel>
+                     <DockPanel  DockPanel.Dock="top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="120" Text="Material + Gauge" VerticalAlignment="Center" Margin="5" />
+                        <ComboBox x:Name="cmbMaterial" Width="115" HorizontalAlignment="Left" Height="20" SelectionChanged="cmbMaterial_SelectionChanged"/>
+                        <ComboBox x:Name="cmbGauge" Width="50" HorizontalAlignment="Left" Height="20" Margin="20,0,0,0" SelectionChanged="cmbGauge_SelectionChanged"/>
+                        <CheckBox x:Name="chkCheckValidSpecification" Content="Check for Valid Specification on Material Change" VerticalAlignment="Center" Margin="10,0,0,0"></CheckBox>
+                     </DockPanel>
+                     <DockPanel  DockPanel.Dock="top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="120" Text="Insulation + Gauge" VerticalAlignment="Center" Margin="5" />
+                        <ComboBox x:Name="cmbInsulationMaterial" Width="115" HorizontalAlignment="Left" Height="20" SelectionChanged="cmbInsulationMaterial_SelectionChanged"/>
+                        <ComboBox x:Name="cmbInsulationGauge" Width="115" HorizontalAlignment="Left" Height="20" Margin="20,0,0,0" SelectionChanged="cmbInsulationGauge_SelectionChanged"/>
+                     </DockPanel>
+                     <DockPanel  DockPanel.Dock="top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="120" Text="Insulation Setting" VerticalAlignment="Center" Margin="5" />
+                        <ComboBox x:Name="cmbInsulationSetting" Width="115" HorizontalAlignment="Left" Height="20" SelectionChanged="cmbInsulationSetting_SelectionChanged"/>
+                     </DockPanel>
+                     <DockPanel  DockPanel.Dock="top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="120" Text="Airturns" VerticalAlignment="Center" Margin="5" />
+                        <ComboBox x:Name="cmbAirturns" Width="115" HorizontalAlignment="Left" Height="20" SelectionChanged="cmbAirturns_SelectionChanged"/>
+                     </DockPanel>
+                     <DockPanel  DockPanel.Dock="top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="120" Text="Splitters" VerticalAlignment="Center" Margin="5" />
+                        <ComboBox x:Name="cmbSplitterOne" Width="115" HorizontalAlignment="Left" Height="20" SelectionChanged="cmbSplitterOne_SelectionChanged"/>
+                        <ComboBox x:Name="cmbSplitterTwo" Width="115" HorizontalAlignment="Left" Height="20" Margin="20,0,0,0" SelectionChanged="cmbSplitterTwo_SelectionChanged"/>
+                     </DockPanel>
+                     <DockPanel  DockPanel.Dock="top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="120" Text="Stiffener" VerticalAlignment="Center" Margin="5" />
+                        <ComboBox x:Name="cmbSiffener" Width="115" HorizontalAlignment="Left" Height="20" SelectionChanged="cmbSiffener_SelectionChanged" />
+                        <TextBlock TextWrapping="Wrap" Width="40" Text="Qty" VerticalAlignment="Center" Margin="20,5,5,5" />
+                        <ComboBox x:Name="cmbSiffenerQty" Width="49" HorizontalAlignment="Left" Margin="20,0,0,0" Height="20" SelectionChanged="cmbSiffenerQty_SelectionChanged" />
+                     </DockPanel>
+                     <DockPanel  DockPanel.Dock="top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="120" Text="Specification" VerticalAlignment="Center" Margin="5" />
+                        <ComboBox x:Name="cmbSpecification" Width="115" HorizontalAlignment="Left" Height="20" SelectionChanged="cmbSpecification_SelectionChanged" />
+                        <CheckBox x:Name="chkCheckValidMaterial" Content="Check for Valid Material on Specification Change" VerticalAlignment="Center" Margin="10,0,0,0"></CheckBox>
+                     </DockPanel>
+                     <DockPanel  DockPanel.Dock="top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="120" Text="Ins Specification" VerticalAlignment="Center" Margin="5" />
+                        <ComboBox x:Name="cmbInsSpecification" Width="115" HorizontalAlignment="Left" Height="20" SelectionChanged="cmbInsSpecification_SelectionChanged" />
+                        <TextBlock TextWrapping="Wrap" Text="Cut Type" VerticalAlignment="Center" Margin="10,7,10,5" Width="48" />
+                        <ComboBox x:Name="cmbCutType" Width="115" HorizontalAlignment="Left" Height="20" />
+                     </DockPanel>
+
+
+                     <DockPanel  DockPanel.Dock="top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="120" Text="Image" VerticalAlignment="Bottom" Margin="5" />
+                        <Image Width="64" Height="64" Name="imgItem" HorizontalAlignment="Left" Stretch="Fill"/>
+                        <Button Name="btnChangeItemImage" Height="25" Width="100" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Bottom" Click="btnChangeItemImage_Click">Change Image</Button>
+                     </DockPanel>
+                     <DockPanel  DockPanel.Dock="top"  VerticalAlignment="Top" Margin="5,0,0,0">
+                        <TextBlock TextWrapping="Wrap" Width="120" Text="Is Hidden in Views" VerticalAlignment="Bottom" Margin="5" />
+                        <CheckBox Name="chkIsHiddenInViews" VerticalAlignment="Center"></CheckBox>
+
+                     </DockPanel> 
+                    
+                     <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="120" Text="Print Object" VerticalAlignment="Bottom" Margin="5"></TextBlock>  
+                        <ComboBox x:Name="cmbItemPO" Width="200" HorizontalAlignment="Left" Height="24" VerticalContentAlignment="Center" SelectionChanged="CmbItemPO_OnSelectionChanged" ></ComboBox>  
+                        <ComboBox x:Name="cmbItemPOCount" Width="50" Margin="20,0,20,0"
+                                  HorizontalAlignment="Left" Height="23" VerticalContentAlignment="Center" SelectionChanged="CmbItemPOCount_OnSelectionChanged" ></ComboBox>
+                       <TextBlock x:Name="txtItemPOUnits" Margin="10,0,0,0" Text="" Width="Auto" VerticalAlignment="Center" /> 
+                       <TextBlock x:Name="txtItemPO" Text="" Margin="5,0,0,0" Width="Auto" VerticalAlignment="Center"></TextBlock> 
+                        
+                     </DockPanel>
+
+                  </StackPanel>
+               </ScrollViewer>
+                   
+                </TabItem>
+                <TabItem x:Name="tbiConnectors" Header="Connectors">
+                    <StackPanel>
+                        <DataGrid x:Name="dgConnectors" Height="235" VerticalAlignment="Top" Loaded="dgConnectors_Loaded" AutoGenerateColumns="False" SelectionMode="Single" MouseDoubleClick="dgConnectors_MouseDoubleClick">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Index}" Header="Connector Index" Width="150"/>
+                                <DataGridComboBoxColumn Width="200" x:Name="Connector" Header="Connector" TextBinding="{Binding ConnName}" SelectedItemBinding="{Binding Conn}" DisplayMemberPath="Name" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Orientation="Horizontal" Margin="5,10,5,5">
+                            <TextBlock TextWrapping="Wrap" Width="120" Text="End Direction" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="20" Text="X:" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="70" Name="txtXEndDir" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="20" Text="Y:" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="70" Name="txtYEndDir" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="20" Text="Z:" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="70" Name="txtZEndDir" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock TextWrapping="Wrap" Width="120" Text="Width Vector" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="20" Text="X:" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="70" Name="txtXWidthDir" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="20" Text="Y:" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="70" Name="txtYWidthDir" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="20" Text="Z:" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="70" Name="txtZWidthDir" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock TextWrapping="Wrap" Width="120" Text="Depth Vector" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="20" Text="X:" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="70" Name="txtXDepthDir" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="20" Text="Y:" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="70" Name="txtYDepthDir" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="20" Text="Z:" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="70" Name="txtZDepthDir" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock TextWrapping="Wrap" Width="120" Text="Connector End Point" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="20" Text="X:" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="70" Name="txtXConnPoint" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="20" Text="Y:" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="70" Name="txtYConnPoint" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="20" Text="Z:" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="70" Name="txtZConnPoint" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock TextWrapping="Wrap" Width="120" Text="Connection Type" HorizontalAlignment="Left"/>
+                            <TextBlock TextWrapping="Wrap" Width="200"  Name="txtConnType" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem x:Name="tbiSeams" Header="Seams">
+                    <StackPanel>
+                        <DataGrid x:Name="dgSeams"  AutoGenerateColumns="False" SelectionMode="Single" Loaded="dgSeams_Loaded" Height="382">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Index}" Header="Seam Index" Width="150"/>
+                                <DataGridComboBoxColumn Width="200" x:Name="Seam" Header="Seam" TextBinding="{Binding SeamName}" SelectedItemBinding="{Binding Seam}" DisplayMemberPath="Name" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </StackPanel>
+                </TabItem>
+                <TabItem x:Name="tbiDampers" Header="Dampers">
+                    <StackPanel>
+                        <DataGrid x:Name="dgDampers" Height="382" VerticalAlignment="Top"  AutoGenerateColumns="False" SelectionMode="Single" Loaded="dgDampers_Loaded">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Index}" Header="Damper Index" Width="150"/>
+                                <DataGridComboBoxColumn Width="200" x:Name="Damper" Header="Damper" TextBinding="{Binding DamperName}" SelectedItemBinding="{Binding Damper}" DisplayMemberPath="Name" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </StackPanel>
+                </TabItem>
+                <TabItem x:Name="tbiItemCosting" Header="Costing" Loaded="tbiItemCosting_Loaded">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,10">
+                            <TextBlock TextWrapping="Wrap" Width="180" Text="Item Cost" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <TextBox x:Name="txtItemCost" BorderThickness="1" Width="100" Height="26" PreviewTextInput="txtItemCost_PreviewTextInput" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                            <TextBlock TextWrapping="Wrap" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Item Fabrication Cost" ></TextBlock>
+                            <TextBox x:Name="txtItemFabCost" BorderThickness="1" Width="100" Height="25" PreviewTextInput="txtItemCost_PreviewTextInput" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                            <TextBlock TextWrapping="Wrap" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Item Installation Cost" ></TextBlock>
+                            <TextBox x:Name="txtItemInstallationCost" BorderThickness="1" Width="100" Height="25" PreviewTextInput="txtItemCost_PreviewTextInput" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                            <TextBlock TextWrapping="Wrap" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Item Extra Installation Time" ></TextBlock>
+                            <TextBox x:Name="txtItemExtraInstallationTime" BorderThickness="1" Width="100" Height="25" PreviewTextInput="txtItemCost_PreviewTextInput" VerticalAlignment="Center"/>
+                            <TextBlock TextWrapping="Wrap" Text="Units" VerticalAlignment="Top" Margin="5,5,10,5" />
+                            <ComboBox x:Name="cmbExtraInstallTimeUnits" Width="100" Height="20" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                            <TextBlock TextWrapping="Wrap" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Item Extra Fabrication Time" ></TextBlock>
+                            <TextBox x:Name="txtItemExtraFabricationTime" BorderThickness="1" Width="100" Height="25" PreviewTextInput="txtItemCost_PreviewTextInput" VerticalAlignment="Center"/>
+                            <TextBlock TextWrapping="Wrap" Text="Units" VerticalAlignment="Top" Margin="5,5,10,5" />
+                            <ComboBox x:Name="cmbExtraFabricationTimeUnits" Width="100" Height="20" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                            <TextBlock TextWrapping="Wrap" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left"  Text="Price List" ></TextBlock>
+                            <ComboBox x:Name="cmbPriceList" Width="243" Height="20" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem x:Name="tbiItemSpooling" Header="Spool Info">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <TextBlock TextWrapping="Wrap" Width="180" Text="Spool Name" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" />
+                            <TextBox x:Name="txtSpoolName" BorderThickness="1" Width="200" Height="25"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock TextWrapping="Wrap" Width="180" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5" ><Run Text="Spool Color"/><Run Language="en-gb" Text=" (0-255)"/></TextBlock>
+                            <TextBox x:Name="txtSpoolColor" BorderThickness="1" Width="200" Height="25" PreviewTextInput="txtSpoolColor_PreviewTextInput"/>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem x:Name="tbiCustomData" Header="Custom Data">
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style x:Key="DisableRow" TargetType="{x:Type DataGridRow}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding OnItem}" Value="True">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Resources>
+                        <DataGrid x:Name="dgCustomData" Height="382" VerticalAlignment="Top" AutoGenerateColumns="False" SelectionMode="Single" Loaded="dgCustomData_Loaded" RowStyle="{StaticResource DisableRow}">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="On Item" Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox Name="chkOnItem" IsChecked="{Binding OnItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                <!--<CheckBox.Style>
+                                                        <Style TargetType="CheckBox">
+                                                            <Setter Property="IsChecked" Value="True"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding OnItem}" Value="True" >
+                                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </CheckBox.Style>-->
+                                            </CheckBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Entry.Description}" Width="200" Header="Description"/>
+                                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Entry.Type}" Header="Data Type" Width="100"/>
+                                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Entry.AddMode}" Header="Add Mode" Width="100"/>
+                                <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="200"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem>
+                <TabItem x:Name="tbiMisc" Header="Miscellaneous">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                            <TextBlock TextWrapping="Wrap" Width="200" Text="Alias" VerticalAlignment="Top" Margin="5" />
+                            <TextBox Name="txtItemAlias" BorderThickness="1" Height="25" Width="200" VerticalAlignment="Top" HorizontalAlignment="Right"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                            <TextBlock TextWrapping="Wrap" Width="200" Text="Order" VerticalAlignment="Top" Margin="5" />
+                            <TextBox Name="txtItemOrder" BorderThickness="1" Height="25" Width="200" VerticalAlignment="Top" HorizontalAlignment="Right"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                            <TextBlock TextWrapping="Wrap" Width="200" Text="Equipment Tag" VerticalAlignment="Top" Margin="5" />
+                            <TextBox Name="txtItemETag" BorderThickness="1" Height="25" Width="200" VerticalAlignment="Top" HorizontalAlignment="Right"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                            <TextBlock TextWrapping="Wrap" Width="200" Text="Zone" VerticalAlignment="Top" Margin="5" />
+                            <TextBox Name="txtItemZone" BorderThickness="1" Height="25" Width="200" VerticalAlignment="Top" HorizontalAlignment="Right"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                            <TextBlock TextWrapping="Wrap" Width="200" Text="Drawing Name" VerticalAlignment="Top" Margin="5" />
+                            <TextBox Name="txtItemDrawingName" BorderThickness="1" Height="25" Width="200" VerticalAlignment="Top" HorizontalAlignment="Right"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                            <TextBlock TextWrapping="Wrap" Width="200" Text="Notes" VerticalAlignment="Top" Margin="5" />
+                            <TextBox Name="txtItemNotes" BorderThickness="1" Height="25" Width="200" VerticalAlignment="Top" HorizontalAlignment="Right"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                            <TextBlock TextWrapping="Wrap" Width="200" Text="Pallet" VerticalAlignment="Top" Margin="5" />
+                            <TextBox Name="txtItemPallet" BorderThickness="1" Height="25" Width="200" VerticalAlignment="Top" HorizontalAlignment="Right"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                            <TextBlock TextWrapping="Wrap" Width="200" Text="SKey" VerticalAlignment="Top" Margin="5" />
+                            <TextBox Name="txtSKey" BorderThickness="1" Height="25" Width="200" VerticalAlignment="Top" HorizontalAlignment="Right"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                            <TextBlock TextWrapping="Wrap" Width="200" Text="ACAD Object Handle" VerticalAlignment="Top" Margin="5" />
+                            <TextBlock TextWrapping="Wrap" Width="200" Text="" VerticalAlignment="Top" Margin="5" Name="txtACADObjectHandle" />
+
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                            <TextBlock TextWrapping="Wrap" Width="200" Text="Service Type" VerticalAlignment="Top" Margin="5" />
+                            <ComboBox x:Name="cmbServiceType" Width="150" HorizontalAlignment="Left" Height="25" SelectionChanged="cmbServiceType_SelectionChanged"/>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </TabItem>
+                <TabItem x:Name="tbiDimesions" Header="Dimensions">
+                    <StackPanel>
+                        <DataGrid x:Name="dgDimensions" Height="290" VerticalAlignment="Top" AutoGenerateColumns="False" SelectionMode="Single" MouseDoubleClick="dgDimensions_MouseDoubleClick">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Name}" IsReadOnly="True" Width="150" Header="Name"/>
+                                <DataGridTextColumn Binding="{Binding Value}" IsReadOnly="True" Header="Value" Width="100"/>
+                                <DataGridTextColumn Binding="{Binding DimensionType}" IsReadOnly="True" Header="Type" Width="100"/>
+                                <DataGridCheckBoxColumn Binding="{Binding IsLocked}" IsReadOnly="True" Header="Locked" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DockPanel Name="dpDimensionEdit" DockPanel.Dock="Bottom" VerticalAlignment="Top" Height="80">
+                            <ContentControl x:Name="ControlHostDims"/>
+                        </DockPanel>
+
+                    </StackPanel>
+
+                </TabItem>
+                <TabItem x:Name="tbiOptions" Header="Options" Height="24" Margin="0,0,0.2,0" VerticalAlignment="Top">
+                    <StackPanel>
+                        <DataGrid x:Name="dgOptions" Height="290" VerticalAlignment="Top" AutoGenerateColumns="False" SelectionMode="Single" MouseDoubleClick="dgOptions_MouseDoubleClick">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Name}" IsReadOnly="True" Width="150" Header="Name"/>
+                                <DataGridTextColumn Binding="{Binding Value}" IsReadOnly="True" Header="Value" Width="100"/>
+                                <DataGridTextColumn Binding="{Binding OptionType}" IsReadOnly="True" Header="Type" Width="100"/>
+                                <DataGridCheckBoxColumn Binding="{Binding IsLocked}" IsReadOnly="True" Header="Locked" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DockPanel Name="dpOptionEdit" DockPanel.Dock="Bottom" VerticalAlignment="Top" Height="80">
+                            <ContentControl x:Name="ControlHostOpts" Height="80" VerticalAlignment="Top" />
+                        </DockPanel>
+
+                    </StackPanel>
+
+                </TabItem>
+                <TabItem x:Name="tbiProductList" Header="Product List">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Height="150">
+                            <StackPanel Orientation="Vertical" Height="150" Margin="0,0,20,0">
+                                <TextBlock Text="Data Fields" Height="20" VerticalAlignment="Center"></TextBlock>
+                                <ListBox Name="lstProdListDataFields" Width="200" HorizontalAlignment="Left" Height="85" Margin="0" SelectionMode="Single">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <CheckBox Name="chkProdListDataField" IsChecked="{Binding IsUsed, Mode=OneWay}" Width="20" VerticalAlignment="Center" Checked="chkProdListDataField_Checked" Unchecked="chkProdListDataField_Unchecked"  />
+                                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <ContentControl Name="contentAddDataField" Width="200" Height="40"></ContentControl>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Height="150" Margin="0,0,20,0">
+                                <TextBlock Text="Dimension Fields" Height="20" VerticalAlignment="Center"></TextBlock>
+                                <ListBox Name="lstProdListDimensionFields" Width="200" HorizontalAlignment="Left" Height="85" Margin="0" SelectionMode="Single">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <CheckBox Name="chkProdListDimensionField" IsChecked="{Binding IsUsed, Mode=OneWay}" Width="20" VerticalAlignment="Center" Checked="chkProdListDimensionField_Checked" Unchecked="chkProdListDimensionField_Unchecked"  />
+                                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <ContentControl Name="contentAddDimensionField" Width="200" Height="40"></ContentControl>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Height="150" Margin="0,0,20,0">
+                                <TextBlock Text="Option Fields" Height="20" VerticalAlignment="Center"></TextBlock>
+                                <ListBox Name="lstProdListOptionFields" Width="200" HorizontalAlignment="Left" Height="85" Margin="0" SelectionMode="Single">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <CheckBox Name="chkProdListOptionField" IsChecked="{Binding IsUsed, Mode=OneWay}" Width="20" VerticalAlignment="Center" Checked="chkProdListOptionField_Checked" Unchecked="chkProdListOptionField_Unchecked"  />
+                                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <ContentControl Name="contentAddOptionField" Width="200" Height="40"></ContentControl>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Height="30">
+                            <StackPanel Orientation="Horizontal" Name="stkAddProductRow">
+                                <TextBlock Text="Add Row" VerticalAlignment="Center"></TextBlock>
+                                <TextBox Name="txtAddRowName" Width="100" Height="20" Margin="10,0,0,0"></TextBox>
+                                <Button Content="Add" Name="btnAddRow" Height="22" VerticalAlignment="Center" Margin="10,0,0,0" Click="btnAddRow_Click" Width="39"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Name="stkAddProductRevision" Margin="10,0,0,0">
+                                <TextBlock Text="Revision" VerticalAlignment="Center"></TextBlock>
+                                <TextBox Name="txtAddProductRevision" Width="150" Height="20" Margin="10,0,0,0"></TextBox>
+                                <Button Name="btnUpdateRevision" Content="Set" Height="22" Margin="10,4,0,4" Width="40" Click="btnUpdateRevision_Click" ></Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Name="stkCreateProductList" Margin="10,0,0,0">
+                                <CheckBox Name="chkCreateProductListFromFile" VerticalAlignment="Center" Content="Load data from File" Margin="8,0,0,0"></CheckBox>
+                                <Button Name="btnCreateProductList" Content="Create" Height="22" Margin="10,4,0,4" Width="50" Click="btnCreateProductList_Click"></Button>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical">
+                                <DataGrid x:Name="dgProductList" VerticalAlignment="Top" AutoGenerateColumns="False" SelectionMode="Single" Height="202" PreviewKeyDown="dgProductList_PreviewKeyDown" Width="630" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="10,70,0,0">
+                                <Button Name="btnMoveDataUp" Click="btnMoveDataUp_Click">
+                                    <Image Source="/FabricationSample;component/Resources/arrow_left_32@2x.png" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                        <Image.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform/>
+                                                <RotateTransform Angle="90"/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </Image.RenderTransform>
+                                    </Image>
+                                </Button>
+                                <Button Name="btnMoveDataDown" Click="btnMoveDataDown_Click">
+                                    <Image Source="/FabricationSample;component/Resources/arrow_left_32@2x.png" Width="20" Height="20" RenderTransformOrigin="0.5,0.5">
+                                        <Image.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform/>
+                                                <RotateTransform Angle="270"/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </Image.RenderTransform>
+                                    </Image>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem x:Name="tbiDocumentLinks" Header="Document Links">
+                    <StackPanel>
+                        <!--<Binding Path="Main" Source="{StaticResource Locator}"/>-->
+                        <DataGrid x:Name="dgDocumentLinks" Height="270" VerticalAlignment="Top" AutoGenerateColumns="False" 
+                                  SelectionMode="Single">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Name}" Width="200" Header="Name"/>
+                                <DataGridHyperlinkColumn IsReadOnly="True" Binding="{Binding Target}" Header="Target" Width="100">
+                                    <DataGridHyperlinkColumn.ElementStyle>
+                                        <Style>
+                                            <EventSetter Event="Hyperlink.Click" Handler="Hyperlink_Click"/>
+                                        </Style>
+                                    </DataGridHyperlinkColumn.ElementStyle>
+                                </DataGridHyperlinkColumn>
+                                <DataGridTextColumn IsReadOnly="True" Binding="{Binding Parameters}" Header="Parameters" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <TextBlock Text="Link Name" VerticalAlignment="Center" Width="100" Margin="10,0,0,0"></TextBlock>
+                            <TextBox Name="txtAddDocumentLinkname" Height="25" VerticalAlignment="Center" Width="200"></TextBox>
+                            <TextBlock Text="Link Target" VerticalAlignment="Center" Width="100" Margin="10,0,0,0"></TextBlock>
+                            <TextBox Name="txtAddDocumentLinkTarget" Height="25" VerticalAlignment="Center" Width="220"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <TextBlock Text="Link Parameters" VerticalAlignment="Center" Width="100" Margin="10,0,0,0"></TextBlock>
+                            <TextBox Name="txtAddDocumentLinkParams" Height="25" VerticalAlignment="Center" Width="200"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <Button Content="Remove Document Link" Height="25" Width="150" HorizontalAlignment="Right" Margin="330,0,0,0" Click="ButtonRemoveDocumentLink_Click"></Button>
+                            <Button Content="Add Document Link" Height="25" Width="150" HorizontalAlignment="Right" Margin="10,0,0,0" Click="ButtonAddDocumentLink_Click"></Button>
+                        </StackPanel>
+                    </StackPanel>
+
+                </TabItem>
+               
+               <TabItem x:Name="tbiParts" Header="Parts" Height="24" VerticalAlignment="Bottom">
+                  <StackPanel>
+                  
+                     <DataGrid Name="dg_parts" Height="345" VerticalAlignment="Top" AutoGenerateColumns="False" SelectionMode="Single" Loaded="dg_parts_OnLoaded" 
+                            CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
+                            VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible" SelectionChanged="Dg_parts_OnSelectionChanged">
+                     <DataGrid.Columns>
+                        <DataGridTextColumn IsReadOnly="True" Width="25" Header="#" Binding="{Binding Number}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="130" Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Material" Binding="{Binding Path=Material.Name}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Gauge" Binding="{Binding Path=Gauge.Thickness}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Width" Binding="{Binding Width}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Height" Binding="{Binding Height}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Bending Info" Binding="{Binding BendingInfo}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="False" Width="200" Header="User Defined Field" Binding="{Binding UserDefinedField, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" ></DataGridTextColumn>
+                     </DataGrid.Columns>      
+                  </DataGrid>
+
+            <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Margin="5">
+              <TextBlock TextWrapping="Wrap" Width="120" Text="Print Object" VerticalAlignment="Bottom" Margin="5"></TextBlock>
+              <ComboBox x:Name="cmbPartPO" Width="200" HorizontalAlignment="Left" Height="24" VerticalContentAlignment="Center" SelectionChanged="CmbPartPO_OnSelectionChanged" ></ComboBox>
+              <TextBlock x:Name="txtPartPOUnits" Margin="10,0,0,0" Text="" Width="Auto" VerticalAlignment="Center" />
+              <TextBlock x:Name="txtPartPO" Text="" Width="Auto" Margin="5,0,0,0" VerticalAlignment="Center"></TextBlock>
+            </DockPanel>
+
+          </StackPanel>
+                          
+               </TabItem>
+
+            <TabItem x:Name="tbiCollars" Header="Collars" Height="24" VerticalAlignment="Bottom">
+               <StackPanel>
+
+                  <DataGrid Name="dg_Collars" Height="381" VerticalAlignment="Top" AutoGenerateColumns="False" SelectionMode="Single" Loaded="dg_collars_OnLoaded" 
+                            CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="True" CanUserSortColumns="True" 
+                            VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Visible">
+                     <DataGrid.Columns>
+                        <DataGridTextColumn IsReadOnly="True" Width="130" Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Width" Binding="{Binding Diameter}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Major Axis" Binding="{Binding MajorAxis}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Cut Size" Binding="{Binding CutSize}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Cut Length" Binding="{Binding CutLength}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Blank Length" Binding="{Binding BlankLength}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Blank Size" Binding="{Binding BlankSize}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Is Cut" Binding="{Binding IsCut}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Library" Binding="{Binding Library}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Seam" Binding="{Binding Path=SeamInfo.Name}"></DataGridTextColumn>
+                        <DataGridTextColumn IsReadOnly="True" Width="100" Header="Connector" Binding="{Binding Path=ConnectorInfo.Name}"></DataGridTextColumn>
+                     </DataGrid.Columns>
+                  </DataGrid>
+
+               </StackPanel>
+
+            </TabItem>
+
+        <TabItem x:Name="tbiAncillaries" Header="Ancillaries" Height="24" VerticalAlignment="Bottom" >
+          <StackPanel>
+            <DataGrid x:Name="dgAncillaries" Loaded="dgAncillaries_Loaded" Height="345" VerticalAlignment="Top" AutoGenerateColumns="False" SelectionMode="Single"
+                            CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="True" CanUserSortColumns="True" 
+                            VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" IsReadOnly="True" SelectionChanged="DgAncillaries_OnSelectionChanged">
+              <DataGrid.Columns>
+                <DataGridTextColumn Header="Ancillary Description" Binding="{Binding Ancillary.Description}" />
+                <DataGridTextColumn Header="Product Id" Binding="{Binding ProductId}" />
+                <DataGridTextColumn Header="Ancillary Type" Binding="{Binding AncillaryType}" />
+                <DataGridTextColumn Header="Usage" Binding="{Binding UsageType}" />
+                <DataGridTextColumn Header="Width or Diameter" Binding="{Binding WidthOrDiameter}" />
+                <DataGridTextColumn Header="Depth" Binding="{Binding Depth}" />
+                <DataGridTextColumn Header="Qty" Binding="{Binding Qty}" />
+                <DataGridTextColumn Header="Length" Binding="{Binding Length}" />
+              </DataGrid.Columns>
+
+            </DataGrid>
+
+            <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Margin="5">
+              <TextBlock TextWrapping="Wrap" Width="120" Text="Print Object" VerticalAlignment="Bottom" Margin="5"></TextBlock>
+              <ComboBox x:Name="cmbAncPO" Width="200" HorizontalAlignment="Left" Height="24" VerticalContentAlignment="Center" SelectionChanged="CmbAncPO_OnSelectionChanged" ></ComboBox>
+              <TextBlock x:Name="txtAncPOUnits" Margin="10,0,0,0" Text="" Width="Auto" VerticalAlignment="Center" />
+              <TextBlock x:Name="txtAncPO" Text="" Width="Auto" Margin="5,0,0,0" VerticalAlignment="Center"></TextBlock>
+            </DockPanel>
+
+          </StackPanel>
+        </TabItem>
+
+      </TabControl>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="btnBack" HorizontalAlignment="Right" Width="35" Click="btnBack_Click" ToolTip="Back to Database Editor">
+                    <Image Source="/FabricationSample;component/Resources/arrow_left_32@2x.png" Width="39" Height="20"/>
+                </Button>
+                <CheckBox x:Name="chkJobEventSubscribe" Content="Subscribe to Job Adding\Added Events" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                <CheckBox x:Name="chkEventSubscribe" Content="Subscribe to Item Updating\Updated Events" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                <Button x:Name="btnAddItemToJob" Width="100" Content="Add Item to Job" Click="btnAddItemToJob_Click" HorizontalAlignment="Right" Margin="20,0,0,0" />
+                <Button x:Name="btnUpdateItems" Width="100" Content="Update Item" Click="btnUpdateItems_Click" HorizontalAlignment="Right" Margin="20,0,0,0" />
+            </StackPanel>
+
+        </StackPanel>
+    </StackPanel>
+</UserControl>

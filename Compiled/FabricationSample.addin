@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<FabricationAddIns>
+  <AddIn Type="Application">
+    <Name>Fabrication API Sample</Name>
+    <FullClassName>FabricationSample.Sample</FullClassName>
+    <Assembly>FabricationSample.dll</Assembly>
+    <AddInId>ba485545-8557-42e6-af17-749d11b79096</AddInId>
+    <VendorId>Fabrication</VendorId>
+    <VendorDescription>Autodesk, Inc, www.autodesk.com</VendorDescription>
+  </AddIn>
+</FabricationAddIns>

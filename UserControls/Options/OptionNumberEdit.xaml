@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="FabricationSample.UserControls.Options.OptionNumberEdit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="80" d:DesignWidth="670" Loaded="UserControl_Loaded">
+    <StackPanel Margin="5,5,5,5">
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Enter a Value between " VerticalAlignment="Center" Name="lblRange"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+            <TextBlock Text="Value" VerticalAlignment="Center" Width="100"/>
+            <TextBox Name="txtValue" Width="150" Height="25" BorderThickness="1" HorizontalAlignment="Right"></TextBox>
+            <CheckBox Name="chkLock" Content="Lock" VerticalAlignment="Center" Margin="10,0"></CheckBox>
+            <Button x:Name="btnUpdatePrices" Height="25" Content="Update Option" HorizontalAlignment="Right" Margin="260,0,0,0" Click="btnUpdatePrices_Click"/>
+
+        </StackPanel>
+       
+    </StackPanel>
+</UserControl>

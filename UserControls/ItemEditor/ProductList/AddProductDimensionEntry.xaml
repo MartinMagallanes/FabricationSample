@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="FabricationSample.UserControls.ItemEditor.ProductList.AddProductDimensionEntry"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="200" Loaded="UserControl_Loaded">
+    <StackPanel Name="stkAddField" Orientation="Vertical">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Add Field" Name="txtFieldLabel" Margin="0,0,10,0"></TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBox Name="txtAddField" Width="130" PreviewTextInput="txtAddField_PreviewTextInput"></TextBox>
+            <Button Name="btnAddField" Content="Add" Click="btnAddField_Click"></Button>
+            <Button Name="btnCancelAddField" Content="Cancel" HorizontalAlignment="Right" Click="btnCancelAddField_Click"></Button>
+        </StackPanel>
+
+    </StackPanel>
+</UserControl>

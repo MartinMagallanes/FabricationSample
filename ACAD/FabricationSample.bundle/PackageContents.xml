@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ApplicationPackage SchemaVersion="1.0" AppVersion="1.0.0" Name="FabricationSample" Description="FabricationSample" Icon="./FabricationSample.ico" HelpFile="./FabricationSampleHelp.htm" ProductCode="{8E951D08-767C-4623-8B82-CDC05AE8B1F5}">
+	<CompanyDetails Name="Autodesk" URL="http://www.autodesk.com/" Email="AutoCAD.apps@autodesk.com"/>
+	<Components>
+		<ComponentEntry AppName="FabricationSample" AppDescription="FabricationSample" ModuleName="./FabricationSample.dll"
+                    LoadOnAutoCADStartup="False" >
+			<Commands GroupName="FabAPI">
+				<Command Local="FabAPI" Global="FabAPI"/>
+			</Commands>
+		</ComponentEntry>
+		<ComponentEntry AppName="FabricationSample" AppDescription="FabricationSample" ModuleName="./FabricationSample.cuix" />
+	</Components>	
+</ApplicationPackage>

@@ -1,0 +1,1028 @@
+﻿<UserControl x:Class="FabricationSample.UserControls.DatabaseEditor.DatabaseEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                          
+             mc:Ignorable="d"
+             d:DesignHeight="460" d:DesignWidth="780" Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded">
+
+    <UserControl.Resources>
+        <Style x:Key="GroupedHeaderStyle" TargetType="{x:Type GroupItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Description}" />
+                            <ItemsPresenter />
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <TabControl x:Name="tbBody" TabStripPlacement="Left">
+        <TabControl.Resources>
+            <Style TargetType="TabItem">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabItem">
+                            <Border Name="Border" BorderThickness="1,1,1,1" BorderBrush="Gainsboro"  Margin="1">
+                                <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Left"
+                                        ContentSource="Header"
+                                        Margin="10,2"
+                                        />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="#FFF0F0F0" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="False">
+                                    <Setter TargetName="Border" Property="Background" Value="White" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </TabControl.Resources>
+
+        <TabItem x:Name="tbiJobItem" Header="Job Items" Height="24" VerticalAlignment="Top">
+            <StackPanel>
+                <DataGrid x:Name="dgJobItems" Height="240" VerticalAlignment="Top" 
+                  Loaded="dgJobItems_Loaded" CanUserSortColumns="True" ItemsSource="{Binding}" AutoGenerateColumns="False" 
+                  MouseDoubleClick="dgJobItems_MouseDoubleClick">
+                    <DataGrid.ItemBindingGroup>
+                        <BindingGroup/>
+                    </DataGrid.ItemBindingGroup>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Source Description" Binding="{Binding SourceDescription}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Number" Binding="{Binding Number}" IsReadOnly="False"/>
+                        <DataGridTextColumn Header="CID" Binding="{Binding CID}" IsReadOnly="False"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Pattern No" Binding="{Binding PatternNumber}" IsReadOnly="True"></DataGridTextColumn>
+                        <DataGridCheckBoxColumn Header="Hidden" Binding="{Binding IsHiddenInViews}" IsReadOnly="False"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status.Name}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Section" Binding="{Binding Section.Description}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Service" Binding="{Binding Service.Name}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Specification" Binding="{Binding Specification.Name}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="DatabaseId" Binding="{Binding DatabaseId}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Material" Binding="{Binding Material.Name}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Gauge" Binding="{Binding Gauge.Thickness}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="ID" Binding="{Binding UniqueId}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="ID Base64" Binding="{Binding UniqueIdBase64}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Weight" Binding="{Binding Weight}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Insulation Spec" Binding="{Binding InsulationSpecification}" IsReadOnly="True"/>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Top" Margin="0,5,0,0">
+                    <TextBlock TextWrapping="Wrap" Width="180" Text="Change Item Status" VerticalAlignment="Center" Margin="5" />
+                    <ComboBox x:Name="cmbItemStatus" Width="105" HorizontalAlignment="Left" Height="20" Text="Select Data Type" SelectionChanged="cmbItemStatus_SelectionChanged"/>
+                </DockPanel>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Top">
+                    <TextBlock TextWrapping="Wrap" Width="180" Text="Change Item Section" VerticalAlignment="Center" Margin="5" />
+                    <ComboBox x:Name="cmbItemSection" Width="105" HorizontalAlignment="Left" Height="20" Text="Select Data Type" SelectionChanged="cmbItemSection_SelectionChanged"/>
+                </DockPanel>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Top">
+                    <TextBlock TextWrapping="Wrap" Width="180" Text="Change Item Service" VerticalAlignment="Center" Margin="5" />
+                    <ComboBox x:Name="cmbService" Width="105" HorizontalAlignment="Left" Height="20" Text="Select Data Type" SelectionChanged="cmbService_SelectionChanged"/>
+                </DockPanel>
+
+
+
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock TextWrapping="Wrap" Width="180" Text="Locate Item by ACAD Handle" VerticalAlignment="Center" Margin="5"  />
+                    <TextBox x:Name="txtACADHandle" Height="25" Width="150" HorizontalAlignment="Left" BorderThickness="2" FontSize="12"/>
+                    <Button x:Name="btnLocateItemByHandle" Width="100" Height="24" Content="Locate Item" Margin="200,0,0,0" Click="btnLocateItemByHandle_Click"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock TextWrapping="Wrap" Width="180" Text="Get AutoCAD Object Handle" VerticalAlignment="Center" Margin="5"  />
+                    <TextBox x:Name="txtGetHandleFromFabItem" Height="25" Width="150" HorizontalAlignment="Left" BorderThickness="2" FontSize="12" IsReadOnly="True"/>
+                    <Button x:Name="btnGetHandleFromFabItem" Width="100" Height="24" Content="Get Handle" Margin="200,0,0,0" Click="btnGetHandleFromFabItem_Click"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                    <Button x:Name="btnRemoveJobItem" Width="150" Height="25" Content="Remove Item From Job" Margin="160,0,0,0" Click="btnRemoveJobItem_Click"/>
+                    <Button x:Name="btnSaveJob" Width="100" Height="25" Content="Save Job" Click="btnSaveJob_Click" Margin="10,0,0,0"/>
+                    <Button x:Name="btnSaveJobAs" Width="100" Height="25" Content="Save Job As" Click="btnSaveJobAs_Click" Margin="10,0,0,0"/>
+                    <Button x:Name="btnUpdateItems" Width="100" Height="25" HorizontalAlignment="Right" Content="Update Items" Click="btnUpdateItems_Click" Margin="10,0,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem x:Name="tbiMapProd" Header="Product Database">
+            <StackPanel>
+                <DataGrid x:Name="dgMapprod" Height="300" VerticalAlignment="Top"  CanUserSortColumns="True" AutoGenerateColumns="False" MouseDoubleClick="dgMapprod_MouseDoubleClick" Loaded="dgMapprod_Loaded" Margin="0,0,-0.2,0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Group" Binding="{Binding Group.Name}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Install Type" Binding="{Binding InstallType}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Finish" Binding="{Binding Finish}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Specification" Binding="{Binding Specification}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Material" Binding="{Binding Material}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Product" Binding="{Binding ProductName}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Range" Binding="{Binding Range}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Size" Binding="{Binding Size}" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock VerticalAlignment="Bottom" Margin="10,-1,0,0">Filter By Group</TextBlock>
+                        <ComboBox Name="cmbMapProdFilterGroup" Width="150" Margin="10,0,0,0" SelectionChanged="cmbMapProdFilterGroup_SelectionChanged">
+                        </ComboBox>
+                        <TextBlock VerticalAlignment="Bottom" Margin="10,-1,0,0">Filter By Database Id</TextBlock>
+                        <TextBox Name="txtFilterMapProdById" Width="150" Height="20" VerticalAlignment="Center" Margin="10,-1,0,0"></TextBox>
+                        <Button Name="btnFilterProdGroup" Margin="10,0" Width="100" Click="btnFilterMapProdById_Click">Filter by Id</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock VerticalAlignment="Bottom" Margin="10,-1,0,0" Width="160">Create new Product Definition</TextBlock>
+                        <TextBox Name="txtNewProductDefinition" Width="150" Height="20" VerticalAlignment="Center" Margin="10,-1,0,0"></TextBox>
+                        <ComboBox Name="cmbNewProductDefinitionGroup" Width="150" Margin="10,0,0,0">
+                        </ComboBox>
+                        <Button Name="btnCreateProductDefinition" Margin="10,0" Width="148" Click="btnCreateProductDefinition_Click">Create Product Definition</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock VerticalAlignment="Bottom" Margin="10,-1,0,0" Width="160">Create new Product Group</TextBlock>
+                        <TextBox Name="txtNewProductGroup" Width="150" Height="20" VerticalAlignment="Center" Margin="10,-1,0,0"></TextBox>
+                        <Button Name="btnCreateProductGroup" Margin="10,0" Width="148" Click="btnCreateProductGroup_Click" >Create Product Group</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock VerticalAlignment="Bottom" Margin="10,-1,0,0" Width="160">Create new Product Supplier</TextBlock>
+                        <TextBox Name="txtNewProductSupplier" Width="150" Height="20" VerticalAlignment="Center" Margin="10,-1,0,0"></TextBox>
+                        <Button Name="btnCreateProductSupplier" Margin="10,0" Width="148" Click="btnCreateProductSupplier_Click" >Create Product Supplier</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,10">
+                        <Button Name="btnLoadMapProd" Margin="10,0" Click="btnLoadMapProd_Click" Width="150">Re-Load Product Entries</Button>
+                        <Button Name="btnSave" Margin="10,0" Width="150" Click="btnSave_Click">Save Product Database</Button>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem x:Name="tbiPrices" Header="Price Lists" Loaded="tbiPrices_Loaded">
+            <StackPanel>
+                <Border Name="Border" BorderThickness="1,1,1,1" BorderBrush="DarkGray"  Margin="1">
+                    <StackPanel Orientation="Horizontal">
+                        <ContentControl Name="ccPriceListTable" Width="650" Height="270" 
+                            HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Top" Margin="0,10,0,0">
+                    <TextBlock Height="21" TextWrapping="Wrap" Text="Supplier Group" VerticalAlignment="Center" Margin="10,0" Width="110"/>
+                    <ComboBox x:Name="cmbSupplierGroup" Width="130" HorizontalAlignment="Left" Margin="0,0,10,0" DisplayMemberPath="Name" SelectionChanged="cmbSupplierGroup_SelectionChanged" Height="25"
+                    IsEditable="False" IsReadOnly="True"/>
+                    <TextBlock Height="21" TextWrapping="Wrap" Text="Price List" VerticalAlignment="Center" Margin="0,0,10,0" />
+                    <ComboBox x:Name="cmbPriceList" Width="130" HorizontalAlignment="Left" Margin="0,0,10,0" Text="Select Data Type" SelectionChanged="cmbPriceList_SelectionChanged"/>
+                    <TextBlock Height="21" TextWrapping="Wrap" Text="Supplier ID" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <ComboBox x:Name="cmbSupplierId" Width="104" HorizontalAlignment="left" Margin="0" Text="Select Data Type" SelectionChanged="cmbSupplierId_SelectionChanged"/>
+
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Bottom"  VerticalAlignment="Top" Margin="0,10,0,0">
+                    <TextBlock Height="21" TextWrapping="Wrap" Text="Actions" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" Margin="10,0" Width="110" FontWeight="Bold"/>
+                </DockPanel>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Top" Margin="0,0,0,0" Height="25">
+                    <Button Name="btnAddSupplierGroup" Width="120" Content="Add Supplier Group" Margin="10,0,0,0" Click="btnAddSupplierGroup_Click" HorizontalAlignment="Left"></Button>
+                    <Button Name="btnDeleteSupplierGroup" Width="125" Margin="10,0,0,0" HorizontalAlignment="Left" Click="btnDeleteSupplierGroup_Click">Delete Supplier Group</Button>
+                    <Button Name="btnEditSupplierGroup" Width="120" Margin="10,0,0,0" HorizontalAlignment="Left" Click="btnEditSupplierGroup_Click">Edit S. Group Name</Button>
+                    <Button Name="btnAddProductEntry" Width="120" Margin="130,0,0,0" Click="btnAddProductEntry_Click" HorizontalAlignment="Left">Add Product Id Entry</Button>
+
+                </DockPanel>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Top" Margin="0,10,0,0" Height="25">
+                    <Button Name="btnAddPriceList" Width="120" Margin="10,0,0,0" HorizontalAlignment="Left" Click="btnAddPriceList_Click">Add Price List</Button>
+                    <Button Name="btnDeletePriceList" Width="125" Margin="10,0,0,0" HorizontalAlignment="Left" Click="btnDeletePriceList_Click">Delete Price List</Button>
+                    <Button Name="btnEditPriceList" Width="120" Margin="10,0,0,0" HorizontalAlignment="Left" Click="btnEditPriceList_Click">Edit Price List Name</Button>
+                    <Button Name="btnAddBreakPointRow" Width="80" Margin="80,0,0,0" Click="btnAddBreakPointRow_Click" HorizontalAlignment="Left">Add Row</Button>
+                    <Button Name="btnAddBreakPointColumn" Width="80" Margin="10,0,0,0" Click="btnAddBreakPointColumn_Click" HorizontalAlignment="Left">Add Column</Button>
+                </DockPanel>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Top" Margin="10,10,0,0">
+                    <ProgressBar x:Name="prgPriceList" Width="500" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="left" Minimum="0"/>
+                    <Button x:Name="btnUpdatePrices" Height="25" Width="100" Click="btnUpdatePrices_Click" Content="Update Prices" HorizontalAlignment="Right" Margin="0,0,20,0"/>
+                </DockPanel>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Top" Margin="0,10"/>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem Header="Supplier Discounts" Loaded="tbiSupplierDiscounts_Loaded">
+            <StackPanel>
+                <DataGrid Name="dgSupplierDiscounts" Width="650" Height="348" AutoGenerateColumns="False" SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Code" Width="200" Binding="{Binding Code, Mode=TwoWay}" IsReadOnly="False"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Value" Width="200" Binding="{Binding Value, Mode=TwoWay}" IsReadOnly="False"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Description" Width="200" Binding="{Binding Description, Mode=TwoWay}" IsReadOnly="False"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Delete Discount" Click="DeleteDiscount_Click"></MenuItem>
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
+                <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Center" Margin="0,10,0,0" >
+                    <TextBlock Height="21" TextWrapping="Wrap" Text="Supplier Group" Margin="10,0,0,0"/>
+                    <ComboBox Name="cmbSupplierGroups" Width="250" HorizontalAlignment="Left" Margin="10,0,0,0" 
+                         SelectionChanged="cmbSupplierDiscounts_OnSelectionChanged" DisplayMemberPath="Name"
+                         />
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Bottom" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,0,0">
+                    <Button Name="btnAddDiscount" Content="Add Discount" Width="100" Click="AddDiscount_Click" IsEnabled="False"></Button>
+                    <Button Name="btnDeleteDiscount" Content="Delete Discount" Width="100" Margin="10,0,0,0" Click="DeleteDiscount_Click" IsEnabled="False"></Button>
+                </DockPanel>
+
+
+            </StackPanel>
+        </TabItem>
+
+        <TabItem x:Name="tbiFabTables" Header="Fabrication Tables" Loaded="tbiFabTimes_Loaded" Height="24" VerticalAlignment="Bottom">
+            <StackPanel>
+
+                <ContentControl Name="ccFabricationTimes" Width="650" Height="300" 
+                            HorizontalAlignment="Left"/>
+
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Center"  Margin="0,10,0,0">
+                    <TextBlock Height="21" TextWrapping="Wrap" Text="Fabrication Table" VerticalAlignment="Center" Width="100" Margin="10,0,0,0" />
+                    <ComboBox x:Name="cmbFabTimesTable" Width="200" HorizontalAlignment="Left" Text="Select Data Type" SelectionChanged="cmbFabTable_SelectionChanged">
+                        <ComboBox.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Name="headerText" Text="{Binding Name}" FontWeight="Bold"></TextBlock>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Name}" Value="">
+                                                <Setter TargetName="headerText" Property="Text" Value="No Group"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ComboBox.GroupStyle>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"></TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock Height="21" TextWrapping="Wrap" Text="Supplier ID" Width="70" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <ComboBox x:Name="cmbFabTableSupplierId" Width="200" HorizontalAlignment="Left" Text="Select Data Type" SelectionChanged="cmbFabTableSupplierId_SelectionChanged" Margin="0"/>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Bottom"  VerticalAlignment="Top" Margin="0,5,0,0">
+                    <TextBlock Height="21" TextWrapping="Wrap" Text="Actions" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" Margin="10,0,0,0" Width="110" FontWeight="Bold"/>
+                </DockPanel>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Center" Margin="0,0,0,0">
+                    <Button Height="25" Width="120" Content="Add Table" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnNewfabricationTable_Click"/>
+                    <Button x:Name="btnDeleteFabTable" Height="25" Width="120" Content="Delete Table" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnDeleteFabTable_Click"/>
+                    <Button x:Name="btnEditFabTable" Height="25" Width="120" Content="Edit Table Name" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnEditFabTable_Click"/>
+                </DockPanel>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Center" Margin="0,5,0,0">
+
+                    <Button x:Name="btnNewFabTableProdEntry" Height="25" Width="120" Content="Add Product Id Entry" HorizontalAlignment="Left" 
+                            Margin="10,0,0,0" Click="btnNewFabTableProdEntry_Click"/>
+                    <Button x:Name="btnNewFabTableRow" Height="25" Width="120" Content="Add Row" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnNewFabTableRow_Click"/>
+                    <Button x:Name="btnNewFabTableColumn" Height="25" Width="120" Content="Add Column" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnNewFabTableColumn_Click"/>
+                </DockPanel>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Top" Margin="0,5,0,0">
+                    <Button x:Name="btnUpdateFabricationTimes" Height="25" Width="150" Click="btnUpdateFabricationTimes_Click" Content="Update Fabrication Times" HorizontalAlignment="Right" Margin="0,0,10,0" DockPanel.Dock="Right"/>
+
+                    <ProgressBar x:Name="prgFabTimes" Width="400" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom" Minimum="0" Margin="10,0,0,0"/>
+                </DockPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem x:Name="tbiInstallTables" Header="Installation Tables" Loaded="tbiInstallationTimes_Loaded" Height="24" VerticalAlignment="Bottom">
+            <StackPanel>
+                <ContentControl Name="ccInstallTimes" Width="650" Height="300" 
+                            HorizontalAlignment="Left"/>
+
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Top" Margin="0,10,0,0">
+                    <TextBlock TextWrapping="Wrap" Text="Installation Table" VerticalAlignment="Center" Width="100" Margin="10,0,0,0" />
+                    <ComboBox x:Name="cmbInstallationTimesTable" Width="150" SelectionChanged="cmbInstallationTable_SelectionChanged">
+                        <ComboBox.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Name="headerText" Text="{Binding Name}" FontWeight="Bold"></TextBlock>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Name}" Value="">
+                                                <Setter TargetName="headerText" Property="Text" Value="No Group"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ComboBox.GroupStyle>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"></TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <TextBlock Text="Supplier ID" Width="70" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <ComboBox x:Name="cmbInstallTableSupplierId" Width="150" SelectionChanged="cmbInstallTableSupplierId_SelectionChanged" HorizontalAlignment="Left"/>
+                    <TextBlock Text="Set" Width="30" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <ComboBox x:Name="cmbInstallTableSet" Width="50" SelectionChanged="cmbInstallTableSet_SelectionChanged" HorizontalAlignment="Left"/>
+
+                </DockPanel>
+
+                <DockPanel DockPanel.Dock="Bottom"  VerticalAlignment="Top" Margin="0,5,0,0">
+                    <TextBlock Height="21" TextWrapping="Wrap" Text="Actions" VerticalAlignment="Center" 
+                     HorizontalAlignment="Left" Margin="10,0,0,0" Width="110" FontWeight="Bold"/>
+                </DockPanel>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Center" Margin="0,0,0,0">
+                    <Button Height="25" Width="120" Content="Add Table" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnNewInstallTable_Click"/>
+                    <Button x:Name="btnDeleteInstallTable" Height="25" Width="120" Content="Delete Table" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnDeleteInstallTable_Click"/>
+                    <Button x:Name="btnEditInstallTable" Height="25" Width="120" Content="Edit Table Name" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnEditInstallTable_Click"/>
+                </DockPanel>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Center" Margin="0,5,0,0">
+                    <Button x:Name="btnNewInstallTableProdEntry" Height="25" Width="120" Content="Add Product Id Entry" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnNewInstallationTableEntry_Click"/>
+                    <Button x:Name="btnNewInstallTableRow" Height="25" Width="120" Content="Add Row" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnNewInstallTableRow_Click"/>
+                    <Button x:Name="btnNewInstallTableColumn" Height="25" Width="120" Content="Add Column" HorizontalAlignment="Left" Margin="10,0,0,0" Click="btnNewInstallTableColumn_Click"/>
+                </DockPanel>
+                <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Top" Margin="0,5,0,0">
+                    <ProgressBar x:Name="prgInstallationTimes" Width="400" Height="20" Minimum="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+
+                    <Button x:Name="btnUpdateInstallationTimes" Width="150" 
+                            Click="btnUpdateInstallationTimes_Click" Content="Update Installation Times" Height="25" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                </DockPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem x:Name="tbiJobCustomData" Header="Job Custom Data">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style x:Key="DisableRow" TargetType="{x:Type DataGridRow}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Exists}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
+                <DataGrid x:Name="dgJobCustomData" Height="410" VerticalAlignment="Top" CanUserSortColumns="True" AutoGenerateColumns="False" Loaded="dgJobCustomData_Loaded" >
+                    <DataGrid.ItemBindingGroup>
+                        <BindingGroup/>
+                    </DataGrid.ItemBindingGroup>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Id" Binding="{Binding Id, Mode=TwoWay}" Width="50"/>
+                        <DataGridTextColumn Header="Description" Width="200" Binding="{Binding Description, Mode=TwoWay}"/>
+                        <DataGridComboBoxColumn Width="100" x:Name="cmbJobCustomDataType" Header="Data Type" TextBinding="{Binding DataType, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectedItemBinding="{Binding DataType,Mode=TwoWay}" />
+                        <DataGridTextColumn Header="Value" Width="180" Binding="{Binding Value, Mode=TwoWay}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button x:Name="btnDeleteJobCustomData" Width="133" Height="24" HorizontalAlignment="Left" Content="Delete Custom Data" Click="btnDeleteJobCustomData_Click" Margin="0,0,0,0"/>
+                    <Button x:Name="btnUpdateJobCustomData" Width="133" Height="24" HorizontalAlignment="Right" Content="Update Custom Data" Click="btnUpdateJobCustomData_Click" Margin="380,0,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem x:Name="tbiCustomData" Header="Item Custom Data">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style x:Key="DisableRow" TargetType="{x:Type DataGridRow}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Exists}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
+                <DataGrid x:Name="dgCustomData" Height="410" VerticalAlignment="Top" CanUserSortColumns="True" AutoGenerateColumns="False" Loaded="dgCustomData_Loaded" >
+                    <DataGrid.ItemBindingGroup>
+                        <BindingGroup/>
+                    </DataGrid.ItemBindingGroup>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Id" Binding="{Binding Id, Mode=TwoWay}" Width="50"/>
+                        <DataGridTextColumn Header="Description" Width="200" Binding="{Binding Description, Mode=TwoWay}"/>
+                        <DataGridComboBoxColumn Width="100" x:Name="cmbCustomDataType" Header="Data Type" TextBinding="{Binding DataType, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectedItemBinding="{Binding DataType,Mode=TwoWay}" />
+                        <DataGridComboBoxColumn Width="100" x:Name="cmbCustomDataAddMode" Header="Add Mode" TextBinding="{Binding AddMode, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" SelectedItemBinding="{Binding AddMode,Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Value" Width="180" Binding="{Binding Value, Mode=TwoWay}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button x:Name="btnDeleteCustomData" Width="133" Height="24" HorizontalAlignment="Left" Content="Delete Custom Data" Click="btnDeleteCustomData_Click" Margin="0,0,0,0"/>
+                    <Button x:Name="btnUpdateCustomData" Width="133" Height="24" HorizontalAlignment="Right" Content="Update Custom Data" Margin="380,0,0,0" Click="btnUpdateCustomData_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem x:Name="tbiItemStatuses" Header="Item Statuses">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style x:Key="DisableRow" TargetType="{x:Type DataGridRow}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Exists}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style x:Key="DisableCell" TargetType="{x:Type DataGridCell}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Exists}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
+                <DataGrid x:Name="dgItemStatuses" Height="410" VerticalAlignment="Top" CanUserSortColumns="True" AutoGenerateColumns="False" Loaded="dgItemStatuses_Loaded">
+                    <DataGrid.ItemBindingGroup>
+                        <BindingGroup/>
+                    </DataGrid.ItemBindingGroup>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Id" Binding="{Binding Id, Mode=TwoWay}" />
+                        <DataGridTextColumn Header="Name" Width="120" Binding="{Binding Name, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Layer Tag" Width="120" Binding="{Binding LayerTag, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Color" Width="120" Binding="{Binding Color, Mode=TwoWay}"/>
+                        <DataGridCheckBoxColumn Header="Output" Width="120" Binding="{Binding Output, Mode=TwoWay}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button x:Name="btnDeleteItemStatuses" Width="133" Height="24" HorizontalAlignment="Right" Content="Delete Item Status" Margin="0,0,0,0" Click="btnDeleteItemStatuses_Click"/>
+                    <Button x:Name="btnUpdateItemStatuses" Width="133" Height="24" HorizontalAlignment="Right" Content="Update Item Statuses" Margin="380,0,0,0" Click="btnUpdateItemStatuses_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem x:Name="tbiJobStatuses" Header="Job Statuses">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style x:Key="DisableRow" TargetType="{x:Type DataGridRow}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Exists}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style x:Key="DisableCell" TargetType="{x:Type DataGridCell}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Exists}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
+                <DataGrid x:Name="dgJobStatuses" Height="410" VerticalAlignment="Top" CanUserSortColumns="True" AutoGenerateColumns="False" Loaded="dgJobStatuses_Loaded">
+                    <DataGrid.ItemBindingGroup>
+                        <BindingGroup/>
+                    </DataGrid.ItemBindingGroup>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description, Mode=TwoWay}" />
+                        <DataGridCheckBoxColumn Header="Active" Width="120" Binding="{Binding Active, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Last Activated" Width="120" Binding="{Binding LastActivated, Mode=TwoWay}"/>
+                        <DataGridCheckBoxColumn Header="DoSave" Width="120" Binding="{Binding DoSave, Mode=TwoWay}"/>
+                        <DataGridComboBoxColumn Header="DoCopy" Width="120" x:Name="cmbJobStatusAction" TextBinding="{Binding DoCopy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItemBinding="{Binding DoCopy,Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Move/Copy To Folder" Width="120" Binding="{Binding CopyToFolder, Mode=TwoWay}"/>
+                        <DataGridCheckBoxColumn Header="DoExport" Width="120" Binding="{Binding DoExport, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="ExportFile" Width="120" Binding="{Binding ExportFile, Mode=TwoWay}"/>
+                        <DataGridCheckBoxColumn Header="Deactivate On Completion" Width="150" Binding="{Binding DeActivateOnCompletion, Mode=TwoWay}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button x:Name="btnDeleteJobStatuses" Width="133" Height="24" HorizontalAlignment="Right" Content="Delete Job Status" Margin="0,0,0,0" Click="btnDeleteJobStatuses_Click"/>
+                    <Button x:Name="btnUpdateJobStatuses" Width="133" Height="24" HorizontalAlignment="Right" Content="Update Job Statuses" Margin="380,0,0,0" Click="btnUpdateJobStatuses_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem x:Name="tbiServiceTypes" Header="Service Types">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style x:Key="DisableRow" TargetType="{x:Type DataGridRow}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CanModify}" Value="False">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
+                <DataGrid x:Name="dgServiceTypes" Height="410" VerticalAlignment="Top" CanUserSortColumns="True" AutoGenerateColumns="False" RowStyle="{StaticResource DisableRow}" Loaded="dgServiceTypes_Loaded"  >
+                    <DataGrid.ItemBindingGroup>
+                        <BindingGroup/>
+                    </DataGrid.ItemBindingGroup>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Id" Width="50" Binding="{Binding Id, Mode=TwoWay}"/>
+                        <DataGridTextColumn Header="Name" Width="300" Binding="{Binding Name, Mode=TwoWay}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Button x:Name="btnDeleteServiceTypes" Width="133" Height="24" HorizontalAlignment="Right" Content="Delete Service Type" Margin="0,0,0,0" Click="btnDeleteServiceTypes_Click"/>
+                    <Button x:Name="btnUpdateServiceTypes" Width="133" Height="24" HorizontalAlignment="Right" Content="Update Service Types" Margin="380,0,0,0" Click="btnUpdateServiceTypes_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem x:Name="tbiPointLocate" Header="Point Locate" Loaded="tbiPointLocate_Loaded" Height="24" VerticalAlignment="Top">
+            <StackPanel>
+                <DataGrid x:Name="dgPointLocate" Height="408" VerticalAlignment="Top" CanUserSortColumns="True" AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Number" Width="100" Binding="{Binding Item.Number}"/>
+                        <DataGridTextColumn Header="Name" Width="150" Binding="{Binding Item.Name}"/>
+                        <DataGridTextColumn Header="Connection Type" Width="120" Binding="{Binding ConnType}"/>
+                        <DataGridTextColumn Header="X" Width="100" Binding="{Binding Location.X}"/>
+                        <DataGridTextColumn Header="Y" Width="100" Binding="{Binding Location.Y}"/>
+                        <DataGridTextColumn Header="Z" Width="100" Binding="{Binding Location.Z}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock Height="21" TextWrapping="Wrap" Text="Filter Points by Type" Margin="0,0,30,0"/>
+                    <ComboBox x:Name="cmbFilterPoints" Width="180" HorizontalAlignment="Left"/>
+                    <Button x:Name="btnPointLocate" Width="133" Height="24" HorizontalAlignment="left" Content="Locate Points" Click="btnPointLocate_Click" Margin="195,0,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem x:Name="tbiServices" Header="Services" Loaded="tbiServices_Loaded" Height="24" VerticalAlignment="Top">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Vertical" Width="638">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Select Service" Width="100"></Label>
+                        <ComboBox Name="cmbSelectService" Width="410" SelectionChanged="cmbSelectService_SelectionChanged">
+                            <ComboBox.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold"></TextBlock>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+                                </GroupStyle>
+                            </ComboBox.GroupStyle>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Button Content="Properties" Margin="5,0,0,0"  Width="100" Click="serviceProperties_Click"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                        <Button Content="Edit Service Name" Width="115" Click="EditServiceName_Click"/>
+                        <Button Content="Add Service" Margin="5,0,0,0" Width="115" Click="AddService_Click"/>
+                        <Button Content="Delete Service" Margin="5,0,0,0" Width="115" Click="DeleteService_Click"/>
+                        <Button Content="Save Services" Margin="5,0,23,0" Width="115" Click="SaveServices_Click"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Content="Use Service Template"></Label>
+                        <ComboBox Name="cmbUseServiceTemplate" Width="492" SelectionChanged="cmbUseServiceTemplate_SelectionChanged">
+                            <ComboBox.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold"></TextBlock>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+                                </GroupStyle>
+                            </ComboBox.GroupStyle>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Content="Service Specification"></Label>
+                        <ComboBox Name="cmbServiceSpecification" Width="429" SelectionChanged="cmbServiceSpecification_SelectionChanged" Margin="5,0,0,0">
+                            <ComboBox.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" FontWeight="Bold"></TextBlock>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+                                </GroupStyle>
+                            </ComboBox.GroupStyle>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Label Content="Not Set"></Label>
+                        <CheckBox Name="chkServiceSpecification" VerticalAlignment="Center" Click="chkServiceSpecification_Click"></CheckBox>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,20,0,0">
+                        <ContentControl Name="ButtonsTabControl_Services" Width="620" 
+                            HorizontalAlignment="Left"/>
+                    </StackPanel>
+
+
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Content="Select Button Item" Width="150"/>
+                        <ComboBox Name="cmbSelectButtonItem" Width="200" SelectionChanged="cmbSelectButtonItem_SelectionChanged">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ServiceTemplateCondition.Description}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Content="Greater Than:"/>
+                        <Label Content="Value" x:Name="labGreaterThan"/>
+                        <Label Content="Less Than Or Equal To:" Margin="50,0,0,0"/>
+                        <Label Content="Value" x:Name="labLessThan"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Content="Item Path:" />
+                        <Label x:Name="labItemPath" Content="Path" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="5,20,0,0">
+                        <Button x:Name="btnAddItem" Content="Add Item To Job" Click="btnAddItem_Click"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+
+        <TabItem x:Name="tbiServiceTemplates" Header="Service Templates" Loaded="tbiServiceTemplates_Loaded" Unloaded="tbiServiceTemplates_UnLoaded">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Width="610" MinHeight="420">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label Content="Select Service Template" Width="150"></Label>
+                        <ComboBox Name="cmbSelectServiceTemplate" Width="460" SelectionChanged="cmbSelectServiceTemplate_SelectionChanged" DisplayMemberPath="Name"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Edit Template Name" Click="editServiceTemplateName_Click" Margin="0,0,5,0" Width="115" />
+                        <Button Content="Add Template" Click="addServiceTemplate_Click" Margin="0,0,5,0" Width="115" />
+                        <Button Content="Delete Template" Click="deleteServiceTemplate_Click" Margin="0,0,0,0" Width="115" />
+                    </StackPanel>
+                    <StackPanel>
+                        <ContentControl Name="ButtonsTabControl_Templates" Width="610" Margin="0,20,0,0"
+                            HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Content="Actions" FontWeight="Bold" HorizontalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="5,10,0,0">
+                        <Button Content="Add New Template Condition" Width="170" Click="addServiceTemplateCondition_Click" />
+                        <Button Content="Add New Tab" Width="90" Click="addServiceTab_Click"  Margin="10,0,0,0" />
+                        <Button Content="Add Button" Width="90" Click="addServiceButton_Click"  Margin="10,0,0,0"/>
+                        <Button Content="Save" Width="80" Click="btnSaveServiceTemplates_Click" Margin="155,0,0,0"></Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Content="Service Template Conditions" FontWeight="Bold" HorizontalAlignment="Center" />
+                    </StackPanel>
+
+                    <DataGrid x:Name="dgTemplateConditions" VerticalAlignment="Top" CanUserSortColumns="True" Margin="5,10,0,0"
+                    AutoGenerateColumns="False" Loaded="dgTemplateConditions_OnLoaded" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                        VerticalScrollBarVisibility="Hidden" CanUserAddRows="True" CanUserDeleteRows="True" 
+                        SelectionMode="Single" Width="600" HorizontalAlignment="Left" RowEditEnding="dgTemplateConditions_rowEditEnding">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Description" Width="300" Binding="{Binding Description, Mode=TwoWay}"/>
+                            <DataGridTextColumn Header="Greater Than" Width="150" Binding="{Binding GreaterThan, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                            <DataGridTextColumn Header="Less Than or Equal To" Width="150" Binding="{Binding LessThanOrEqual, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                        </DataGrid.Columns>
+
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Delete Condition" Click="deleteTemplateCondition_Click"></MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                        <!--<DataGrid.ItemContainerStyle>
+              <Style TargetType="{x:Type MenuItem}"></Style>
+            </DataGrid.ItemContainerStyle>-->
+
+                    </DataGrid>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+
+        <TabItem x:Name="tbiMaterials" Header="Materials" Loaded="tbiMaterials_Loaded">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Width="610" MinHeight="420">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label Content="Select Material" Width="150"></Label>
+                        <ComboBox Name="cmbSelectMaterial" Width="460" SelectionChanged="cmbSelectMaterial_SelectionChanged">
+                            <ComboBox.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Name="groupText" Text="{Binding Name}" FontWeight="Bold"></TextBlock>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding Name}" Value="">
+                                                    <Setter TargetName="groupText" Property="Text" Value="No Group"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </GroupStyle.HeaderTemplate>
+                                </GroupStyle>
+                            </ComboBox.GroupStyle>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Edit Material" Click="editMaterial_Click" Margin="0,0,5,0" Width="115" />
+                        <Button Content="Add Material" Click="addMaterial_Click" Margin="0,0,5,0" Width="115" />
+                        <Button Content="Delete Material" Click="deleteMaterial_Click" Margin="0,0,0,0" Width="115" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Content="Gauges" FontWeight="Bold"></Label>
+                    </StackPanel>
+                    <StackPanel Margin="0,5,0,0">
+                        <ContentControl Name="GaugesView" Width="610" 
+                            HorizontalAlignment="Left"/>
+                    </StackPanel>
+
+                    <Label Content="Actions" FontWeight="Bold" Margin="0,20,0,0"></Label>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Button Name="btnAddGauge" Content="Add Gauge" Width="115" Click="btnAddGauge_Click"></Button>
+                        <Button Name="btnAddGaugeSize" Content="Add Gauge Size" Width="115" Click="btnAddGaugeSize_Click" Margin="5,0,0,0"></Button>
+                        <Button Name="btnSaveMaterials" Content="Save Materials" Width="115" Click="btnSaveMaterials_Click" Margin="260,0,0,0"></Button>
+
+                    </StackPanel>
+
+                    <Label Content="Gauge Sizes" FontWeight="Bold" Margin="0,10,0,0"></Label>
+                    <StackPanel Margin="0,5,0,20">
+                        <ContentControl Name="GaugesSizesView" Width="610" 
+                            HorizontalAlignment="Left"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+
+        <TabItem x:Name="tbiSections" Header="Sections" Loaded="tbiSections_Loaded">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Width="610" MinHeight="420">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label Content="Select Section" Width="150"></Label>
+                        <ComboBox Name="cmbSelectSection" Width="460" SelectionChanged="cmbSelectSection_SelectionChanged">
+                            <ComboBox.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.HeaderTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Name="groupText" Text="{Binding Name}" FontWeight="Bold"></TextBlock>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding Name}" Value="">
+                                                    <Setter TargetName="groupText" Property="Text" Value="No Group"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+
+                                    </GroupStyle.HeaderTemplate>
+                                </GroupStyle>
+                            </ComboBox.GroupStyle>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Description}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Edit Section" Click="editSection_Click" Margin="0,0,5,0" Width="115" />
+                        <Button Content="Add Section" Click="addSection_Click" Margin="0,0,5,0" Width="115" />
+                        <Button Content="Delete Section" Click="deleteSection_Click" Margin="0,0,0,0" Width="115" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Content="Index" Width="93" HorizontalContentAlignment="Right"></Label>
+                        <TextBox Name="txtSectionIndex"  Margin="10,0,0,0" Width="50" PreviewTextInput="txtSectionIndex_PreviewTextInput" LostFocus="txtSectionIndex_LostFocus"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <Label Content="Difficulty Factor" Width="93" HorizontalContentAlignment="Right"></Label>
+                        <TextBox Name="txtSectionDiffFactor" Margin="10,0,0,0" Width="50" PreviewTextInput="txtSectionDiffFactor_PreviewTextInput" LostFocus="txtSectionDiffFactor_LostFocus"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <Label Content="Retro Fitted" Width="93" HorizontalContentAlignment="Right"></Label>
+                        <CheckBox Name="chkSectionRetroFitted" Margin="10,0,0,0" VerticalAlignment="Center" Checked="chkSectionRetroFitted_Checked" Unchecked="chkSectionRetroFitted_Unchecked"></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <Label Content="Retro Fitted %" Width="93" HorizontalContentAlignment="Right"></Label>
+                        <TextBox Name="txtSectionRetroPercent" Margin="10,0,0,0" Width="50" PreviewTextInput="txtSectionRetroPercent_PreviewTextInput" LostFocus="txtSectionRetroPercent_LostFocus"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <Label Content="Layer Tag" Width="93" HorizontalContentAlignment="Right"></Label>
+                        <TextBox Name="txtSectionLayerTag" Margin="10,0,0,0" Width="200" LostFocus="txtSectionLayerTag_LostFocus"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <Label Content="Floor Level" Width="93" HorizontalContentAlignment="Right"></Label>
+                        <TextBox Name="txtSectionFloorLevel" Margin="10,0,0,0" Width="50" PreviewTextInput="txtSectionFloorLevel_PreviewTextInput" LostFocus="txtSectionFloorLevel_LostFocus"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <Label Content="Slab Level" Width="93" HorizontalContentAlignment="Right"></Label>
+                        <TextBox Name="txtSectionSlabLevel" Margin="10,0,0,0" Width="50" PreviewTextInput="txtSectionSlabLevel_PreviewTextInput" LostFocus="txtSectionSlabLevel_LostFocus"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="8,5,0,0" Height="25">
+                        <Button Content="Color Picker" Width="80" Click="btnSectionColorPicker_Click"></Button>
+                        <Border Width="25" Margin="15,0,0,0" BorderThickness="1,1,1,1" BorderBrush="Black">
+                            <Rectangle Name="rectSectionColor" Width="25"></Rectangle>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right" Height="25">
+                        <Button Name="btnSaveSections" Content="Save Sections" Click="btnSaveSections_Click"></Button>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+
+        <TabItem x:Name="tbiAncillaries" Header="Ancillaries" Loaded="tbiAncillaries_Loaded">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Width="610" MinHeight="420">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label Content="Select Ancillary Type" Width="150"></Label>
+                        <ComboBox Name="cmbSelectAncillary" Width="460" SelectionChanged="cmbSelectAncillary_SelectionChanged">
+                            <!--<ComboBoxItem Content="Airturn Tracks" />
+              <ComboBoxItem Content="Airturn Vanes" />
+              <ComboBoxItem Content="Ancillary Materials" />
+              <ComboBoxItem Content="Clips" />
+              <ComboBoxItem Content="Corners" />
+              <ComboBoxItem Content="Fixings" />
+              <ComboBoxItem Content="Gasket" />
+              <ComboBoxItem Content="Isolators" />
+              <ComboBoxItem Content="Sealant" />
+              <ComboBoxItem Content="Seam Material" />
+              <ComboBoxItem Content="Support Rods" />
+              <ComboBoxItem Content="Tie Rods" />-->
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Edit Ancillary" Click="editAncillary_Click" Margin="0,0,5,0" Width="115" />
+                        <Button Content="Add Ancillary" Click="addAncillary_Click" Margin="0,0,5,0" Width="115" />
+                        <Button Content="Delete Ancillary" Click="deleteAncillary_Click" Margin="0,0,0,0" Width="115" />
+                    </StackPanel>
+
+                    <StackPanel Margin="0,10,0,0" Height="330">
+                        <ContentControl x:Name="ccAncillaries" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Right" Height="25">
+                        <Button Content="Save Ancillaries" Click="saveAncillaries_Click"></Button>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+
+        <TabItem x:Name="tbiJobInformation" Header="Job Information" Loaded="tbiJobInformation_Loaded">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,10,0,0">
+                <StackPanel Orientation="Vertical" Margin="0,5">
+                    <DockPanel DockPanel.Dock="Top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="180" Text="Job Name" VerticalAlignment="Center"  />
+                        <TextBox x:Name="txtJobName" Height="25" Width="271" HorizontalAlignment="Left" BorderThickness="2" FontSize="12" IsReadOnly="True"/>
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="180" Text="Job Reference" VerticalAlignment="Center"  />
+                        <TextBox x:Name="txtReference" Height="25" Width="271" HorizontalAlignment="Left" BorderThickness="2" FontSize="12"/>
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="180" Text="Job Field1" VerticalAlignment="Center"  />
+                        <TextBox x:Name="txtJobField1" Height="25" Width="271" HorizontalAlignment="Left" BorderThickness="2" FontSize="12"/>
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="180" Text="Job Field2" VerticalAlignment="Center"  />
+                        <TextBox x:Name="txtJobField2" Height="25" Width="271" HorizontalAlignment="Left" BorderThickness="2" FontSize="12"/>
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="180" Text="Job Creation Date" VerticalAlignment="Center"/>
+                        <TextBox x:Name="txtJobDate" Height="25" Width="271" HorizontalAlignment="Left" BorderThickness="2" FontSize="12" IsReadOnly="True"/>
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="180" Text="Customer" VerticalAlignment="Center"  />
+                        <TextBox x:Name="txtJobCustomer" Height="25" Width="271" HorizontalAlignment="Left" BorderThickness="2" FontSize="12" IsReadOnly="True"/>
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="180" Text="Customer Address" VerticalAlignment="Top"  />
+                        <TextBox x:Name="txtJobCustomerAddress" Height="60" Width="271" HorizontalAlignment="Left" BorderThickness="2" FontSize="12" IsReadOnly="True" TextWrapping="WrapWithOverflow"/>
+                    </DockPanel>
+                    <DockPanel  DockPanel.Dock="Top"  VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="180" Text="Required Date" VerticalAlignment="Center"  />
+                        <DatePicker x:Name="dtpRequiredDate" Width="271" Margin="0,0,10,0" FirstDayOfWeek="Monday" IsTodayHighlighted="True" HorizontalAlignment="Left"/>
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="180" Text="Custom Job Data" VerticalAlignment="Center"  />
+                        <DataGrid x:Name="dgJobInfoCustomData" CanUserAddRows="False" VerticalAlignment="Top" Loaded="dgJobInfoCustomData_Loaded" CanUserSortColumns="False" ItemsSource="{Binding}" AutoGenerateColumns="False">
+                            <DataGrid.ItemBindingGroup>
+                                <BindingGroup/>
+                            </DataGrid.ItemBindingGroup>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Value" Binding="{Binding Value, Mode=TwoWay}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Margin="5">
+                        <TextBlock TextWrapping="Wrap" Width="180" Text="Job Statuses" VerticalAlignment="Center"  />
+                        <DataGrid x:Name="dgJobInfoStatuses" CanUserAddRows="False" VerticalAlignment="Top" Loaded="dgJobInfoStatuses_Loaded" CanUserSortColumns="False" ItemsSource="{Binding}" AutoGenerateColumns="False">
+                            <DataGrid.ItemBindingGroup>
+                                <BindingGroup/>
+                            </DataGrid.ItemBindingGroup>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Description" Binding="{Binding Description}"  IsReadOnly="True"/>
+                                <DataGridCheckBoxColumn Header="Active" Width="120" Binding="{Binding Active}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Last Activated" Width="140" Binding="{Binding LastActivated}" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+
+          <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Margin="5">
+            <TextBlock TextWrapping="Wrap" Width="120" Text="Print Object" VerticalAlignment="Bottom" Margin="5"></TextBlock>
+            <ComboBox x:Name="cmbJobPO" Width="200" HorizontalAlignment="Left" Height="24" VerticalContentAlignment="Center" SelectionChanged="CmbJobPO_OnSelectionChanged" Loaded="CmbJobPO_OnLoaded" ></ComboBox>
+            <TextBlock x:Name="txtJobPO" Text="" Width="120" VerticalAlignment="Center"></TextBlock>
+          </DockPanel>
+
+          <DockPanel  DockPanel.Dock="Bottom"  VerticalAlignment="Top" Margin="0,80,0,0">
+                        <Button x:Name="btnUpdateJobInfo" Width="140" Height="24" DockPanel.Dock="Right" HorizontalAlignment="Right" Content="Update Job Information"  Margin="0,0,10,0" Click="btnUpdateJobInfo_Click"/>
+                    </DockPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+
+        <TabItem x:Name="tbiCreateItem" Header="Manage Content" Loaded="tbiCreateItem_Loaded">
+            <StackPanel Orientation="Vertical">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <!-- Style for the selected item -->
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Style.Triggers>
+                            <!-- Selected and has focus -->
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="BorderBrush" Value="#7DA2CE"/>
+                            </Trigger>
+
+                            <!-- Selected but does not have the focus -->
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                    <Condition Property="IsSelectionActive" Value="False"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="BorderBrush" Value="#D9D9D9"/>
+                            </MultiTrigger>
+                        </Style.Triggers>
+                        <Style.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="2"/>
+                            </Style>
+                        </Style.Resources>
+                    </Style>
+                </StackPanel.Resources>
+
+                <StackPanel>
+                    <ContentControl Name="ItemsFolder_ManageContent" Width="620" 
+                            HorizontalAlignment="Left"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Height="60" >
+                    <ContentControl Name="ccItemCreateContent"></ContentControl>
+                </StackPanel>
+
+            </StackPanel>
+        </TabItem>
+        <TabItem x:Name="tbiApplication" Header="Application" Height="24" VerticalAlignment="Top" Loaded="tbiApplication_Loaded">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+                <StackPanel Orientation="Vertical" Width="631" Height="450">
+                    <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                        <TextBlock Text="Configuration Name" Width="200"></TextBlock>
+                        <TextBlock Name="txtAppConfigName" Text=""></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                        <TextBlock Text="Executable Name" Width="200"></TextBlock>
+                        <TextBlock Name="txtAppExeName" Text="" ></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                        <TextBlock Text="Executable Path" Width="200"></TextBlock>
+                        <TextBlock Name="txtAppExePath" Text=""></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                        <TextBlock Text="Working Directory" Width="200"></TextBlock>
+                        <TextBlock Name="txtAppWorkingDirectory" Text=""></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                        <TextBlock Text="Version Name" Width="200"></TextBlock>
+                        <TextBlock Name="txtAppVersionName" Text=""></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                        <TextBlock Text="Version Number" Width="200"></TextBlock>
+                        <TextBlock Name="txtAppVersionNumber" Text=""></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                        <TextBlock Text="Product Version" Width="200"></TextBlock>
+                        <TextBlock Name="txtAppProductVersion" Text=""></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                        <TextBlock Text="Profile Name" Width="200"></TextBlock>
+                        <TextBlock Name="txtAppProfileName" Text=""></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                        <TextBlock Text="Item Path (Current Profile)" Width="200"></TextBlock>
+                        <TextBlock Name="txtAppItemPath" Text=""></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                        <TextBlock Text="Database Path (Current Profile)" Width="200"></TextBlock>
+                        <TextBlock Name="txtAppDatabase" Text=""></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                        <TextBlock Text="Database Units" Width="200"></TextBlock>
+                        <TextBlock Name="txtAppDatabaseUnits" Text=""></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+    </TabControl>
+</UserControl>

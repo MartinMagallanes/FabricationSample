@@ -1,0 +1,299 @@
+﻿<UserControl x:Class="FabricationSample.UserControls.Ancillaries.AncillaryDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FabricationSample.UserControls.Ancillaries"
+             xmlns:api="clr-namespace:Autodesk.Fabrication.DB;assembly=FabricationAPI"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="400" Loaded="UserControl_Loaded"
+             >
+  
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="180" />
+      <ColumnDefinition Width="210" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="28" x:Name="rowDescription"/>
+      <RowDefinition Height="28" x:Name="rowGroup"/>
+      <RowDefinition Height="28" x:Name="rowProductId"/>
+      <RowDefinition Height="28" x:Name="rowDiameter" />
+      <RowDefinition Height="28" x:Name="rowCostType"/>
+      <RowDefinition Height="28" x:Name="rowCostByQty"/>
+      <RowDefinition Height="28" x:Name="rowCostByLength"/>
+      <RowDefinition Height="28" x:Name="rowPriceList"/>
+      <RowDefinition Height="28" x:Name="rowWeightByQty"/>
+      <RowDefinition Height="28" x:Name="rowWeightByLength"/>
+      <RowDefinition Height="28" x:Name="rowFTimeType"/>
+      <RowDefinition Height="28" x:Name="rowFTimeByQty"/>
+      <RowDefinition Height="28" x:Name="rowFTimeByLength"/>
+      <RowDefinition Height="28" x:Name="rowFTimesTable"/>
+      <RowDefinition Height="28" x:Name="rowITimeType"/>
+      <RowDefinition Height="28" x:Name="rowITimeByQty"/>
+      <RowDefinition Height="28" x:Name="rowITimeByLength"/>
+      <RowDefinition Height="28" x:Name="rowITimesTable"/>
+      <RowDefinition Height="28" x:Name="rowLinearLength"/>
+      <RowDefinition Height="28" x:Name="rowAdjustLength"/>
+      <RowDefinition Height="50" />
+    </Grid.RowDefinitions>
+
+    <Label Grid.Row="0" Grid.Column="0" Content="Description" HorizontalAlignment="Right" />
+    <Label Grid.Row="1" Grid.Column="0" Content="Group" HorizontalAlignment="Right" />
+    <Label Grid.Row="2" Grid.Column="0" Content="Product Id" HorizontalAlignment="Right" />
+    <Label Grid.Row="3" Grid.Column="0" Content="Diameter" HorizontalAlignment="Right" />
+    <Label Grid.Row="4" Grid.Column="0" Content="Cost Type" HorizontalAlignment="Right" />
+    <Label Grid.Row="5" Grid.Column="0" Content="Cost By Qty" HorizontalAlignment="Right" x:Name="labCostByQty" />
+    <Label Grid.Row="6" Grid.Column="0" Content="Cost By Length" HorizontalAlignment="Right" x:Name="labCostByLength" />
+    <Label Grid.Row="7" Grid.Column="0" Content="Price List" HorizontalAlignment="Right" x:Name="labPriceList" />
+    <Label Grid.Row="8" Grid.Column="0" Content="Weight By Qty" HorizontalAlignment="Right" />
+    <Label Grid.Row="9" Grid.Column="0" Content="Weight By Length" HorizontalAlignment="Right" />
+    <Label Grid.Row="10" Grid.Column="0" Content="Fabrication Time Type" HorizontalAlignment="Right" />
+    <Label Grid.Row="11" Grid.Column="0" Content="Fabrication Time By Qty" HorizontalAlignment="Right" x:Name="labFTimeByQty"/>
+    <Label Grid.Row="12" Grid.Column="0" Content="Fabrication Time By Length" HorizontalAlignment="Right" x:Name="labFTimeByLength" />
+    <Label Grid.Row="13" Grid.Column="0" Content="Fabrication Times Table" HorizontalAlignment="Right" x:Name="labFTimesTable" />
+    <Label Grid.Row="14" Grid.Column="0" Content="Installation Time Type"  HorizontalAlignment="Right" />
+    <Label Grid.Row="15" Grid.Column="0" Content="Installation Time By Qty" HorizontalAlignment="Right" />
+    <Label Grid.Row="16" Grid.Column="0" Content="Installation Time By Length" HorizontalAlignment="Right" />
+    <Label Grid.Row="17" Grid.Column="0" Content="Installation Times Table" HorizontalAlignment="Right" x:Name="labITimesTable" />
+    <Label Grid.Row="18" Grid.Column="0" Content="Linear Length" HorizontalAlignment="Right" />
+    <Label Grid.Row="19" Grid.Column="0" Content="Adjust Length" HorizontalAlignment="Right" />
+
+
+    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Description}" x:Name="txtBoxDescription" >
+      <TextBox.Style>
+        <Style TargetType="TextBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBox.Style>
+    </TextBox>
+
+    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Group}" >
+      <TextBox.Style>
+        <Style TargetType="TextBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBox.Style>
+    </TextBox>
+
+    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ProductId}" >
+      <TextBox.Style>
+        <Style TargetType="TextBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBox.Style>
+    </TextBox>
+
+    <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Diameter}" />
+
+    <ComboBox Grid.Row="4" Grid.Column="1" x:Name="cmbCostType" SelectedValue="{Binding CostType}" SelectionChanged="cmbCostType_SelectionChanged" >
+      <ComboBox.Style>
+        <Style TargetType="ComboBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </ComboBox.Style>
+    </ComboBox>
+
+    <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CostByQty}" x:Name="txtBoxCostByQty" >
+      <TextBox.Style>
+        <Style TargetType="TextBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBox.Style>
+    </TextBox>
+
+    <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding CostByLength}" x:Name="txtBoxCostByLength" >
+      <TextBox.Style>
+        <Style TargetType="TextBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBox.Style>
+    </TextBox>
+
+    <ComboBox Grid.Row="7" Grid.Column="1" x:Name="cmbPriceList" DisplayMemberPath="Name"
+              SelectionChanged="cmbPriceList_SelectionChanged" Loaded="cmbPriceList_Loaded" SelectedItem="{Binding PriceList}">
+      <ComboBox.Style>
+        <Style TargetType="ComboBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </ComboBox.Style>
+    </ComboBox>
+
+
+    <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding WeightByQty}" >
+      <TextBox.Style>
+        <Style TargetType="TextBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBox.Style>
+    </TextBox>
+
+    <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding WeightByLength}" >
+      <TextBox.Style>
+        <Style TargetType="TextBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBox.Style>
+    </TextBox>
+
+    <ComboBox Grid.Row="10" Grid.Column="1" x:Name="cmbFTimeType" SelectedValue="{Binding FabricationTimeType}" SelectionChanged="cmbFTimeType_SelectionChanged" >
+      <ComboBox.Style>
+        <Style TargetType="ComboBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </ComboBox.Style>
+    </ComboBox>
+
+    <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding FabricationTimeByQty}" x:Name="txtboxFTimeByQty" >
+      <TextBox.Style>
+        <Style TargetType="TextBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBox.Style>
+    </TextBox>
+
+    <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding FabricationTimeByLength}" x:Name="txtboxFTimeByLength" >
+      <TextBox.Style>
+        <Style TargetType="TextBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBox.Style>
+    </TextBox>
+
+    <ComboBox Grid.Row="13" Grid.Column="1" x:Name="cmbFTime" DisplayMemberPath="Name" 
+              SelectionChanged="cmbFTime_SelectionChanged" SelectedItem="{Binding FabricationTimesTable}" Loaded="cmbFTime_Loaded"> 
+      <ComboBox.GroupStyle>
+        <GroupStyle>
+          <GroupStyle.HeaderTemplate>
+            <DataTemplate>
+              <TextBlock Name="headerText" Text="{Binding Name}" FontWeight="Bold"></TextBlock>
+            </DataTemplate>
+          </GroupStyle.HeaderTemplate>
+        </GroupStyle>
+      </ComboBox.GroupStyle>
+
+      <ComboBox.Style>
+        <Style TargetType="ComboBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </ComboBox.Style>
+    </ComboBox>
+
+    <ComboBox Grid.Row="14" Grid.Column="1" x:Name="cmbITimeType" SelectedValue="{Binding InstallationTimeType}" SelectionChanged="cmbITimeType_SelectionChanged" >
+      <ComboBox.Style>
+        <Style TargetType="ComboBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </ComboBox.Style>
+    </ComboBox>
+
+    <TextBox Grid.Row="15" Grid.Column="1" Text="{Binding InstallationTimeByQty}" x:Name="txtboxITimeByQty" >
+      <TextBox.Style>
+        <Style TargetType="TextBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBox.Style>
+    </TextBox>
+
+    <TextBox Grid.Row="16" Grid.Column="1" Text="{Binding InstallationTimeByLength}" x:Name="txtboxITimeByLength" >
+      <TextBox.Style>
+        <Style TargetType="TextBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBox.Style>
+    </TextBox>
+
+    <ComboBox Grid.Row="17" Grid.Column="1" x:Name="cmbITime" DisplayMemberPath="Name" 
+              SelectionChanged="cmbITime_SelectionChanged" Loaded="cmbITime_Loaded" SelectedItem="{Binding InstallationTimesTable}">
+      <ComboBox.GroupStyle>
+        <GroupStyle>
+          <GroupStyle.HeaderTemplate>
+            <DataTemplate>
+              <TextBlock Name="headerText" Text="{Binding Name}" FontWeight="Bold"></TextBlock>
+            </DataTemplate>
+          </GroupStyle.HeaderTemplate>
+        </GroupStyle>
+      </ComboBox.GroupStyle>
+
+      <ComboBox.Style>
+        <Style TargetType="ComboBox">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding CanChange}" Value="False">
+              <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </ComboBox.Style>
+    </ComboBox>
+
+    <TextBox Grid.Row="18" Grid.Column="1" Text="{Binding LinearLength}" />
+    <TextBox Grid.Row="19" Grid.Column="1" Text="{Binding AdjustLength}" />
+
+    <Button Grid.Row="20" Grid.Column="1" Content="OK" Height="28" Width="40" HorizontalAlignment="Right"  Click="Button_Click"/>
+
+  </Grid>
+</UserControl>
