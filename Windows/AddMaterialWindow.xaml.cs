@@ -56,7 +56,7 @@ namespace FabricationSample
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-      cmbMaterialTypes.ItemsSource = MaterialTypes();
+      cmbMaterialUsages.ItemsSource = MaterialUsages();
     }
 
     private void btnAddMaterial_Click(object sender, RoutedEventArgs e)
@@ -69,13 +69,13 @@ namespace FabricationSample
         MessageBox.Show("Material name cannot be empty", "Material", MessageBoxButton.OK, MessageBoxImage.Exclamation);
         return;
       }
-      else if (cmbMaterialTypes.SelectedItem == null)
+      else if (cmbMaterialUsages.SelectedItem == null)
       {
         MessageBox.Show("A material type needs to be selected", "Material", MessageBoxButton.OK, MessageBoxImage.Exclamation);
         return;
       }
 
-      KeyValuePair<MaterialType, string> item = (KeyValuePair<MaterialType, string>)cmbMaterialTypes.SelectedItem; 
+      KeyValuePair<MaterialUsage, string> item = (KeyValuePair<MaterialUsage, string>)cmbMaterialUsages.SelectedItem; 
 
       FabricationManager.DBEditor.addMaterial(name, group, item.Key);
       this.Close();
@@ -83,19 +83,19 @@ namespace FabricationSample
 
     #endregion
 
-    private ObservableCollection<KeyValuePair<MaterialType, string>> MaterialTypes()
+    private ObservableCollection<KeyValuePair<MaterialUsage, string>> MaterialUsages()
     {
-      var values = Enum.GetValues(typeof(MaterialType)).Cast<MaterialType>().ToList();
-      var dictionary = new Dictionary<MaterialType, string>();
+      var values = Enum.GetValues(typeof(MaterialUsage)).Cast<MaterialUsage>().ToList();
+      var dictionary = new Dictionary<MaterialUsage, string>();
 
-      foreach (MaterialType matType in values)
+      foreach (MaterialUsage matType in values)
       {
         string description = matType.ToString();
         dictionary.Add(matType, description);
       }
 
       var ordered = dictionary.OrderBy(x => x.Value);
-      return new ObservableCollection<KeyValuePair<MaterialType, string>>(ordered);
+      return new ObservableCollection<KeyValuePair<MaterialUsage, string>>(ordered);
     }
 
   }

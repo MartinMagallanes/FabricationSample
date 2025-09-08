@@ -32,10 +32,10 @@ namespace FabricationSample
     private Material _material;
     private string _newName;
     private string _newGroup;
-    private MaterialType _newType;
+    private MaterialUsage _newType;
     public string NewName { get { return _newName; } }
     public string NewGroup { get { return _newGroup; } }
-    public MaterialType NewMaterialType { get { return _newType; } }
+    public MaterialUsage NewMaterialUsage { get { return _newType; } }
 
     #region ctor
 
@@ -54,15 +54,15 @@ namespace FabricationSample
         txtNewGroup.IsReadOnly = true;
       }
 
-      var types = GetMaterialTypes();
+      var usages = GetMaterialUsages();
 
-      cmbMaterialType.ItemsSource = types;
+      cmbMaterialUsage.ItemsSource = usages;
 
-      foreach (MaterialType mt in types)
+      foreach (MaterialUsage mu in usages)
       {
-        if (mt == material.Type)
+        if (mu == material.Usage)
         {
-          cmbMaterialType.SelectedItem = mt;
+          cmbMaterialUsage.SelectedItem = mu;
           break;
         }
       }
@@ -105,7 +105,7 @@ namespace FabricationSample
 
       _newGroup = newGroup;
 
-      _newType = (MaterialType)cmbMaterialType.SelectedItem;
+      _newType = (MaterialUsage)cmbMaterialUsage.SelectedItem;
 
       if (errors == 0)
         this.Close();
@@ -118,9 +118,9 @@ namespace FabricationSample
 
     #endregion
 
-    private ObservableCollection<MaterialType> GetMaterialTypes()
+    private ObservableCollection<MaterialUsage> GetMaterialUsages()
     {
-      return new ObservableCollection<MaterialType>(Enum.GetValues(typeof(MaterialType)).Cast<MaterialType>());
+      return new ObservableCollection<MaterialUsage>(Enum.GetValues(typeof(MaterialUsage)).Cast<MaterialUsage>());
     }
   }
 }

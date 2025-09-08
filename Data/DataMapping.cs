@@ -188,7 +188,7 @@ namespace FabricationSample.Data
                     Discount discount = SupplierGroup.Discounts.Discounts.FirstOrDefault(x => x.Code == value);
                     if (discount != null)
                     {
-                        Entry.DiscountCode = discount;
+                        Entry.DiscountCode = discount.Code;
                         _discountCode = value;
                     }
 
@@ -212,7 +212,7 @@ namespace FabricationSample.Data
             _productEntryValue = Entry.Value;
             _status = Entry.Status;
             _date = Entry.Date;
-            _discountCode = Entry.DiscountCode == null ? string.Empty : Entry.DiscountCode.Code;
+            _discountCode = Entry.DiscountCode == null ? string.Empty : Entry.DiscountCode;
         }
     }
 
@@ -828,24 +828,11 @@ namespace FabricationSample.Data
         {
             get
             {
-                string base64 = Button.GetBase64ButtonImage();
-                if (String.IsNullOrWhiteSpace(base64))
-                {
-                    // no image, so use a place-holder
-                    string imagePath = "pack://application:,,,/FabricationSample;component/Resources/adsk.png";
-
-                    ImageSource image = new BitmapImage(new Uri(imagePath));
-
-                    return image;
-                }
-
-                var bytes = Convert.FromBase64String(base64);
-
-                using (var stream = new MemoryStream(bytes))
-                {
-                    return BitmapFrame.Create(stream,
-                        BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
-                }
+                var img = Button.GetButtonImageFilename();
+                if (File.Exists(img))
+                    return new BitmapImage(new Uri(img));
+                else
+                    return null;
             }
         }
 

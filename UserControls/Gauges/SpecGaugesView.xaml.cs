@@ -39,7 +39,11 @@ namespace FabricationSample.UserControls
         return;
 
       List<Gauge> gauges = material.Gauges.ToList();
-      gauges = gauges.OrderBy(x => x.Thickness).ToList();
+      gauges = gauges
+                .OrderBy(x => (x as ElectricalContainmentGauge)?.Specification)
+                .ThenBy(x => (x as PipeworkGauge)?.Specification)
+                .ThenBy(x => x.Thickness)
+                .ToList();
 
       var collection = new ObservableCollection<Gauge>(gauges);
 
@@ -76,7 +80,7 @@ namespace FabricationSample.UserControls
 
       FabricationManager.CurrentGauge = e.AddedItems[0] as Gauge;
 
-      switch (material.Type)
+      switch (FabricationManager.CurrentGauge.Type)
       {
         default:
           break;

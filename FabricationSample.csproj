@@ -3,6 +3,7 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <AcadVersion>2024</AcadVersion>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{2589D739-54EE-4762-8BA2-F5F882F092FB}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -38,19 +39,19 @@
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="accoremgd">
-      <HintPath>..\..\..\..\..\3rdparty\AutoCAD\accoremgd.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\AutoCAD $(AcadVersion)\accoremgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="acdbmgd">
-      <HintPath>..\..\..\..\..\3rdparty\AutoCAD\acdbmgd.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\AutoCAD $(AcadVersion)\acdbmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="acmgd">
-      <HintPath>..\..\..\..\..\3rdparty\AutoCAD\acmgd.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\AutoCAD $(AcadVersion)\acmgd.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="FabricationAPI">
-      <HintPath>..\..\..\..\bin\urelease64\FabricationAPI.dll</HintPath>
+      <HintPath>C:\Program Files\Autodesk\Fabrication $(AcadVersion)\CADmep\FabricationAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -125,9 +126,6 @@
     </Compile>
     <Compile Include="UserControls\GaugeSizes\ElectricalContainmentGaugeSizeView.xaml.cs">
       <DependentUpon>ElectricalContainmentGaugeSizeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UserControls\GaugeSizes\LinearDuctGaugeSizeView.xaml.cs">
-      <DependentUpon>LinearDuctGaugeSizeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\GaugeSizes\MachineGaugeSizeView.xaml.cs">
       <DependentUpon>MachineGaugeSizeView.xaml</DependentUpon>
@@ -297,10 +295,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\GaugeSizes\ElectricalContainmentGaugeSizeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\GaugeSizes\LinearDuctGaugeSizeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -529,9 +523,6 @@
     </PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(XamlSpyInstallPath)MSBuild\FirstFloor.XamlSpy.WPF.targets" Condition="'$(XamlSpyInstallPath)' != '' and '$(Configuration)' == 'DEBUG'" />
-  <PropertyGroup>
-    <PreBuildEvent>..\..\..\..\..\..\..\..\3rdparty\downloadpackages.bat release</PreBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

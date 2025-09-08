@@ -64,7 +64,7 @@ namespace FabricationSample.UserControls.ItemEditor
       StiffenerInfo _selectedStiffner;
       int _selectedStiffenerQty;
       Specification _selectedSpecification;
-      Specification _selectedInsSpecification;
+      InsulationSpecification _selectedInsSpecification;
       ServiceType _selectedServiceType;
 
       #endregion
@@ -124,7 +124,7 @@ namespace FabricationSample.UserControls.ItemEditor
          }
 
          //Insulation
-         cmbInsulationMaterial.ItemsSource = new ObservableCollection<Material>(); Database.Materials.Where(x => x.Insulation == true);
+         cmbInsulationMaterial.ItemsSource = new ObservableCollection<Material>(); Database.Materials.Where(x => x.Usage == MaterialUsage.Insulation);
          cmbInsulationMaterial.DisplayMemberPath = "Name";
 
          cmbInsulationMaterial.Text = FabricationManager.CurrentItem.Insulation.Material != null ? FabricationManager.CurrentItem.Insulation.Material.Name : string.Empty;
@@ -214,7 +214,7 @@ namespace FabricationSample.UserControls.ItemEditor
          }
 
          //Insulation Specifications
-         cmbInsSpecification.ItemsSource = new ObservableCollection<Specification>(Database.InsulationSpecifications);
+         cmbInsSpecification.ItemsSource = new ObservableCollection<InsulationSpecification>(Database.InsulationSpecifications);
          cmbInsSpecification.DisplayMemberPath = "Name";
 
          if (FabricationManager.CurrentItem.InsulationSpecification != null)
@@ -418,7 +418,7 @@ namespace FabricationSample.UserControls.ItemEditor
       private void cmbInsSpecification_SelectionChanged(object sender, SelectionChangedEventArgs e)
       {
          if (e.AddedItems.Count > 0 && cmbInsSpecification.ItemsSource != null)
-            _selectedInsSpecification = (Specification)e.AddedItems[0];
+            _selectedInsSpecification = (InsulationSpecification)e.AddedItems[0];
       }
 
       private void dgConnectors_Loaded(object sender, RoutedEventArgs e)

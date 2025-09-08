@@ -20,14 +20,14 @@ using System.Windows.Shapes;
 namespace FabricationSample.UserControls
 {
     /// <summary>
-    /// Interaction logic for MachineGaugeSizeView.xaml
+    /// Interaction logic for RoundGaugeSizeView.xaml
     /// </summary>
-    public partial class MachineGaugeSizeView : UserControl
+    public partial class RoundGaugeSizeView : UserControl
     {
         private MachineGauge _gauge;
         private GaugeSize _selectedGaugeSize;
 
-        public MachineGaugeSizeView(MachineGauge gauge)
+        public RoundGaugeSizeView(MachineGauge gauge)
         {
             InitializeComponent();
 
