@@ -1,3 +1,6 @@
+Download and install (Fabrication 2024 only):
+https://github.com/MartinMagallanes/FabricationSample/releases/download/v1.0.0/FabricationSample.-.Installer.msi
+
 **Application:** Fabrication Sample  
 **Fabrication Products:** ESTmep, CAMduct. CADmep  
 **Fabrication Version:** 2021  
