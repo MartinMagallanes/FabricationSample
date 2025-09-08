@@ -493,6 +493,7 @@
     <Content Include="FabricationSample.addin">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="ReadMe_FabricationSample.md" />
     <None Include="Resources\Setup.ico" />
     <Resource Include="Resources\part.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -515,7 +516,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ACAD\FabricationSample.bundle\FabricationSample.cuix" />
-    <None Include="ReadMe_FabricationSample.rtf" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
